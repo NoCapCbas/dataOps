@@ -32,6 +32,9 @@ prod-preview:
 prod-local:
 	docker compose --env-file .env -f docker-compose.prod-local.yml up -d --build
 
+local-install:
+	cd site && npm install
+
 local-dev:
 	cd site && npm run dev
 
