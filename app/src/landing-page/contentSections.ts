@@ -7,33 +7,40 @@ import avatarPlaceholder from '../client/static/avatar-placeholder.webp';
 export const landingPageNavigationItems: NavigationItem[] = [
   { name: 'Features', to: '#features' },
   { name: 'Pricing', to: routes.PricingPageRoute.to },
-  { name: 'Documentation', to: DocsUrl },
-  { name: 'Blog', to: BlogUrl },
+  { name: 'Contact', to: '#contact' },
+  // { name: 'Documentation', to: DocsUrl },
+  // { name: 'Blog', to: BlogUrl },
 ];
 export const features = [
   {
-    name: 'Cool Feature #1',
-    description: 'Describe your cool feature here.',
-    icon: '🤝',
-    href: DocsUrl,
+    name: 'Custom Data Extraction',
+    description: 'We can build tailored data extraction solutions for your business.',
+    icon: '🎯',
   },
   {
-    name: 'Cool Feature #2',
-    description: 'Describe your cool feature here.',
-    icon: '🔐',
-    href: DocsUrl,
+    name: 'Multiple Data Formats',
+    description: 'Get your data in the format you need JSON, CSV, Excel, etc.',
+    icon: '📊',
   },
   {
-    name: 'Cool Feature #3',
-    description: 'Describe your cool feature here.',
-    icon: '🥞',
-    href: DocsUrl,
+    name: 'On Time Delivery',
+    description: 'We value your time and will deliver on time.',
+    icon: '🕒',
   },
   {
-    name: 'Cool Feature #4',
-    description: 'Describe your cool feature here.',
-    icon: '💸',
-    href: DocsUrl,
+    name: 'Any Public Data Source',
+    description: 'We can scrape any public data source.',
+    icon: '🌐',
+  },
+  {
+    name: 'Compliance First',
+    description: 'Ethical scraping practices that respect robots.txt and website terms of service.',
+    icon: '🛡️',
+  },
+  {
+    name: 'No Code Required',
+    description: 'No code required. We handle the scraping and data extraction.',
+    icon: '🤖',
   },
 ];
 export const testimonials = [
@@ -60,21 +67,39 @@ export const testimonials = [
   },
 ];
 
+
 export const faqs = [
   {
     id: 1,
-    question: 'Whats the meaning of life?',
-    answer: '42.',
-    href: 'https://en.wikipedia.org/wiki/42_(number)',
+    question: 'How quickly can you set up a new scraping project?',
+    answer: 'Most projects can be set up within 2-3 business days. Complex projects might take up to a week.',
+  },
+  {
+    id: 2,
+    question: 'What about rate limiting and IP blocking?',
+    answer: 'We use advanced proxy rotation and respect rate limits to ensure reliable data collection.',
+  },
+  {
+    id: 3,
+    question: 'Is scraping legal?',
+    answer: 'We follow ethical scraping practices, respect robots.txt, and only scrape publicly available data. If scraping was illegal, google would not exist.',
+  },
+  {
+    id: 4,
+    question: 'What happens if website structure changes?',
+    answer: 'We monitor all scrapers 24/7 and quickly adapt to any website changes to ensure continuous data flow.',
   },
 ];
+
 export const footerNavigation = {
   app: [
-    { name: 'Documentation', href: DocsUrl },
-    { name: 'Blog', href: BlogUrl },
+    { name: 'Pricing', href: routes.PricingPageRoute.to },
+    { name: 'Features', href: '/#features' },
+    { name: 'Contact', href: '/#contact' },
+    // { name: 'Documentation', href: DocsUrl },
+    // { name: 'Blog', href: BlogUrl },
   ],
   company: [
-    { name: 'About', href: 'https://wasp-lang.dev' },
     { name: 'Privacy', href: '#' },
     { name: 'Terms of Service', href: '#' },
   ],

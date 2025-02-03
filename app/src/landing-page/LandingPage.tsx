@@ -4,6 +4,7 @@ import Clients from './components/Clients';
 import Features from './components/Features';
 import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
+import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 export default function LandingPage() {
@@ -11,10 +12,11 @@ export default function LandingPage() {
     <div className='bg-white dark:text-white dark:bg-boxdark-2'>
       <main className='isolate dark:bg-boxdark-2'>
         <Hero />
-        <Clients />
+        {/* <Clients /> */}
         <Features features={features} />
-        <Testimonials testimonials={testimonials} />
+        {/* <Testimonials testimonials={testimonials} /> */}
         <FAQ faqs={faqs} />
+        <Contact />
       </main>
       <Footer footerNavigation={footerNavigation} />
     </div>

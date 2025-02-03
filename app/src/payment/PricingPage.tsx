@@ -18,15 +18,21 @@ interface PaymentPlanCard {
 export const paymentPlanCards: Record<PaymentPlanId, PaymentPlanCard> = {
   [PaymentPlanId.Basic]: {
     name: prettyPaymentPlanName(PaymentPlanId.Basic),
-    price: '$10',
+    price: '$500',
     description: 'All you need to get started',
-    features: ['1000 requests a month', '20 max sites', 'max frequency of 15 minutes', 'email notifications', 'Basic support'],
+    features: ['4 new custom web scrapers a month limit', 'One project at a time'],
   },
   [PaymentPlanId.Pro]: {
     name: prettyPaymentPlanName(PaymentPlanId.Pro),
-    price: '$50',
+    price: '$1000',
     description: 'Our most popular plan',
-    features: ['5000 requests a month', '20 max sites', 'max frequency of 5 minutes', 'email notifications', 'Pro support'],
+    features: ['Unlimited web scraping', 'Unlimited sites', 'Unlimited frequency', 'Unlimited requests', 'Unlimited support', 'One Project at a time'],
+  }, 
+  [PaymentPlanId.Custom]: {
+    name: prettyPaymentPlanName(PaymentPlanId.Custom),
+    price: 'Custom',
+    description: 'Contact us for a custom plan or One-time web scraping projects',
+    features: ['Custom requests', 'Custom sites', 'Custom frequency', 'Custom support'],
   },
   // [PaymentPlanId.Credits10]: {
   //   name: prettyPaymentPlanName(PaymentPlanId.Credits10),
@@ -93,13 +99,11 @@ const PricingPage = () => {
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
         <div id='pricing' className='mx-auto max-w-4xl text-center'>
           <h2 className='mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white'>
-            Pick your <span className='text-yellow-500'>pricing</span>
+            Clear & Simple <span className='text-yellow-500'>pricing</span>
           </h2>
         </div>
         <p className='mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600 dark:text-white'>
-          Choose between Stripe and LemonSqueezy as your payment provider. Just add your Product IDs! Try it
-          out below with test credit card number <br />
-          <span className='px-2 py-1 bg-gray-100 rounded-md text-gray-500'>4242 4242 4242 4242 4242</span>
+          Pick the plan that best fits your needs
         </p>
         <div className='isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 lg:gap-x-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3'>
           {Object.values(PaymentPlanId).map((planId) => (
@@ -142,6 +146,7 @@ const PricingPage = () => {
                   <span className='text-sm font-semibold leading-6 text-gray-600 dark:text-white'>
                     {paymentPlans[planId].effect.kind === 'subscription' && '/month'}
                   </span>
+
                 </p>
                 <ul role='list' className='mt-8 space-y-3 text-sm leading-6 text-gray-600 dark:text-white'>
                   {paymentPlanCards[planId].features.map((feature) => (
@@ -187,7 +192,8 @@ const PricingPage = () => {
                   )}
                   disabled={isPaymentLoading}
                 >
-                  {!!user ? 'Buy plan' : 'Log in to buy plan'}
+                  {planId === PaymentPlanId.Custom ? 'Contact us' :
+                  !!user ? 'Buy plan' : 'Log in to buy plan'}
                 </button>
               )}
             </div>

@@ -19,3 +19,7 @@ fetchOps Basic $10/month plan, more plans coming soon
 [ ] Add Stripe Payment Processor
 [ ] Create core service
 [ ] Add google linking if account already exists
+
+# Resources
+yellow-500: #EAB308
+illustrations: https://undraw.co/ 
