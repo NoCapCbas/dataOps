@@ -1,261 +1,177 @@
-import type { Task, GptResponse } from 'wasp/entities';
-import type {
-  GenerateGptResponse,
-  CreateTask,
-  DeleteTask,
-  UpdateTask,
-  GetGptResponses,
-  GetAllTasksByUser,
-} from 'wasp/server/operations';
+import type { Resume, ResumeScreeningResult, AnalyzeResumesRequest, UploadResumesRequest } from './types';
 import { HttpError } from 'wasp/server';
-import { GeneratedSchedule } from './schedule';
 import OpenAI from 'openai';
+import PDFParser from 'pdf2json';
+import * as mammoth from 'mammoth';
 
-const openai = setupOpenAI();
-function setupOpenAI() {
+let openai: OpenAI | null = null;
+
+function setupOpenAI(): OpenAI {
   if (!process.env.OPENAI_API_KEY) {
-    return new HttpError(500, 'OpenAI API key is not set');
+    throw new HttpError(500, 'OpenAI API key is not set');
   }
-  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  if (!openai) {
+    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return openai;
 }
 
-//#region Actions
-type GptPayload = {
-  hours: string;
-};
-
-export const generateGptResponse: GenerateGptResponse<GptPayload, GeneratedSchedule> = async ({ hours }, context) => {
+export const analyzeResumes = async (args: AnalyzeResumesRequest, context: any): Promise<ResumeScreeningResult[]> => {
   if (!context.user) {
     throw new HttpError(401);
   }
 
-  const tasks = await context.entities.Task.findMany({
-    where: {
-      user: {
-        id: context.user.id,
-      },
-    },
-  });
-
-  const parsedTasks = tasks.map(({ description, time }) => ({
-    description,
-    time,
-  }));
-
   try {
-    // check if openai is initialized correctly with the API key
-    if (openai instanceof Error) {
-      throw openai;
-    }
+    const openaiClient = setupOpenAI();
+    const resumes = await context.entities.Resume.findMany({
+      where: { userId: context.user.id }
+    });
 
     const hasCredits = context.user.credits > 0;
-    const hasValidSubscription =
-      !!context.user.subscriptionStatus &&
+    const hasValidSubscription = 
+      !!context.user.subscriptionStatus && 
       context.user.subscriptionStatus !== 'deleted' &&
       context.user.subscriptionStatus !== 'past_due';
     const canUserContinue = hasCredits || hasValidSubscription;
 
     if (!canUserContinue) {
       throw new HttpError(402, 'User has not paid or is out of credits');
-    } else {
-      console.log('decrementing credits');
-      await context.entities.User.update({
-        where: { id: context.user.id },
-        data: {
-          credits: {
-            decrement: 1,
-          },
-        },
-      });
     }
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo', // you can use any model here, e.g. 'gpt-3.5-turbo', 'gpt-4', etc.
-      messages: [
-        {
-          role: 'system',
-          content:
-            'you are an expert daily planner. you will be given a list of main tasks and an estimated time to complete each task. You will also receive the total amount of hours to be worked that day. Your job is to return a detailed plan of how to achieve those tasks by breaking each task down into at least 3 subtasks each. MAKE SURE TO ALWAYS CREATE AT LEAST 3 SUBTASKS FOR EACH MAIN TASK PROVIDED BY THE USER! YOU WILL BE REWARDED IF YOU DO.',
-        },
-        {
-          role: 'user',
-          content: `I will work ${hours} hours today. Here are the tasks I have to complete: ${JSON.stringify(
-            parsedTasks
-          )}. Please help me plan my day by breaking the tasks down into actionable subtasks with time and priority status.`,
-        },
-      ],
-      tools: [
-        {
-          type: 'function',
-          function: {
-            name: 'parseTodaysSchedule',
-            description: 'parses the days tasks and returns a schedule',
-            parameters: {
-              type: 'object',
-              properties: {
-                mainTasks: {
-                  type: 'array',
-                  description: 'Name of main tasks provided by user, ordered by priority',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      name: {
-                        type: 'string',
-                        description: 'Name of main task provided by user',
-                      },
-                      priority: {
-                        type: 'string',
-                        enum: ['low', 'medium', 'high'],
-                        description: 'task priority',
-                      },
-                    },
-                  },
-                },
-                subtasks: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      description: {
-                        type: 'string',
-                        description:
-                          'detailed breakdown and description of sub-task related to main task. e.g., "Prepare your learning session by first reading through the documentation"',
-                      },
-                      time: {
-                        type: 'number',
-                        description: 'time allocated for a given subtask in hours, e.g. 0.5',
-                      },
-                      mainTaskName: {
-                        type: 'string',
-                        description: 'name of main task related to subtask',
-                      },
-                    },
-                  },
-                },
-              },
-              required: ['mainTasks', 'subtasks', 'time', 'priority'],
+    const results = await Promise.all(resumes.map(async (resume: Resume) => {
+      const completion = await openaiClient.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are an expert resume screener. Analyze the resume against the job description and provide detailed feedback. Focus on matching skills, experience level, and potential fit. IMPORTANT: Only extract and include information that is explicitly present in the resume text. Do not infer, generate, or make assumptions about any information. If a field is not explicitly present in the resume, omit it from your response.'
+          },
+          {
+            role: 'user',
+            content: `Job Description: ${args.jobDescription}\n\nResume Content: ${resume.content}`
+          }
+        ],
+        functions: [{
+          name: 'analyzeResume',
+          description: 'Analyze resume against job description',
+          parameters: {
+            type: 'object',
+            properties: {
+              candidateName: { type: 'string' },
+              matchPercentage: { type: 'number', description: 'Match percentage between 0-100' },
+              analysis: { type: 'string', description: 'Detailed analysis of the match' },
+              keySkills: { type: 'array', items: { type: 'string' }, description: 'Key skills found in resume' },
+              highlights: { type: 'array', items: { type: 'string' }, description: 'Key highlights and strengths' },
+              redFlags: { type: 'array', items: { type: 'string' }, description: 'Potential concerns or missing requirements' },
+              phoneNumber: { type: 'string', description: 'Phone number of the candidate' },
+              email: { type: 'string', description: 'Email of the candidate' },
+              linkedinProfileUrl: { type: 'string', description: 'LinkedIn profile URL of the candidate' }
             },
-          },
-        },
-      ],
-      tool_choice: {
-        type: 'function',
-        function: {
-          name: 'parseTodaysSchedule',
-        },
-      },
-      temperature: 1,
-    });
+            required: ['candidateName', 'matchPercentage', 'analysis', 'keySkills', 'highlights']
+          }
 
-    const gptArgs = completion?.choices[0]?.message?.tool_calls?.[0]?.function.arguments;
+        }],
+        function_call: { name: 'analyzeResume' }
+      });
 
-    if (!gptArgs) {
-      throw new HttpError(500, 'Bad response from OpenAI');
-    }
+      const functionCall = completion.choices[0].message.function_call;
+      if (!functionCall?.arguments) {
+        throw new Error('Failed to get analysis from OpenAI');
+      }
+      
+      const result = JSON.parse(functionCall.arguments);
+      
+      return context.entities.ResumeScreeningResult.create({
+        data: {
+          candidateName: result.candidateName,
+          matchPercentage: result.matchPercentage,
+          analysis: result.analysis,
+          keySkills: result.keySkills,
+          highlights: result.highlights,
+          redFlags: result.redFlags || [],
+          phoneNumber: result.phoneNumber || null,
+          email: result.email || null,
+          linkedinProfileUrl: result.linkedinProfileUrl || null,
+          resumeId: resume.id,
+          userId: context.user.id
+        }
+      });
+    }));
 
-    console.log('gpt function call arguments: ', gptArgs);
-
-    await context.entities.GptResponse.create({
-      data: {
-        user: { connect: { id: context.user.id } },
-        content: JSON.stringify(gptArgs),
-      },
-    });
-
-    return JSON.parse(gptArgs);
-  } catch (error: any) {
-    if (!context.user.subscriptionStatus && error?.statusCode != 402) {
+    if (!hasValidSubscription) {
       await context.entities.User.update({
         where: { id: context.user.id },
-        data: {
-          credits: {
-            increment: 1,
-          },
-        },
+        data: { credits: { decrement: 1 } }
       });
     }
+
+    return results;
+  } catch (error: any) {
     console.error(error);
-    const statusCode = error.statusCode || 500;
-    const errorMessage = error.message || 'Internal server error';
-    throw new HttpError(statusCode, errorMessage);
+    throw new HttpError(500, error.message || 'Failed to analyze resumes');
   }
 };
 
-export const createTask: CreateTask<Pick<Task, 'description'>, Task> = async ({ description }, context) => {
+export const uploadResumes = async ({ files }: UploadResumesRequest, context: any): Promise<Resume[]> => {
   if (!context.user) {
     throw new HttpError(401);
   }
 
-  const task = await context.entities.Task.create({
-    data: {
-      description,
-      user: { connect: { id: context.user.id } },
-    },
-  });
+  try {
+    const createPromises = files.map(async file => {
+      const fileName = file?.name || 'unnamed';
+      const fileType = fileName.split('.').pop()?.toLowerCase() || '';
+      
+      let content = '';
+      const buffer = await file.arrayBuffer();
 
-  return task;
+      if (fileType === 'pdf') {
+        const pdfParser = new PDFParser();
+        content = await new Promise((resolve, reject) => {
+          pdfParser.on('pdfParser_dataReady', (pdfData) => {
+            resolve(decodeURIComponent(pdfData.Pages.map(page => 
+              page.Texts.map(text => text.R.map(r => r.T).join(' ')).join(' ')
+            ).join('\n')));
+          });
+          pdfParser.on('pdfParser_dataError', reject);
+          pdfParser.parseBuffer(Buffer.from(buffer));
+        });
+      } else if (fileType === 'docx') {
+        const result = await mammoth.extractRawText({ arrayBuffer: buffer });
+        content = result.value;
+      } else {
+        throw new Error('Unsupported file format. Please upload PDF or DOCX files.');
+      }
+
+      return context.entities.Resume.create({
+        data: {
+          fileName,
+          fileUrl: 'temp-url',
+          fileType,
+          content,
+          userId: context.user.id
+        }
+      });
+    });
+
+    return Promise.all(createPromises);
+  } catch (error: any) {
+    console.error('Resume upload error:', error);
+    throw new HttpError(500, `Failed to upload resumes: ${error.message}`);
+  }
 };
 
-export const updateTask: UpdateTask<Partial<Task>, Task> = async ({ id, isDone, time }, context) => {
+export const getAllResumes = async (_args: void, context: any): Promise<Resume[]> => {
   if (!context.user) {
     throw new HttpError(401);
   }
 
-  const task = await context.entities.Task.update({
+  return context.entities.Resume.findMany({
     where: {
-      id,
-    },
-    data: {
-      isDone,
-      time,
-    },
-  });
-
-  return task;
-};
-
-export const deleteTask: DeleteTask<Pick<Task, 'id'>, Task> = async ({ id }, context) => {
-  if (!context.user) {
-    throw new HttpError(401);
-  }
-
-  const task = await context.entities.Task.delete({
-    where: {
-      id,
-    },
-  });
-
-  return task;
-};
-//#endregion
-
-//#region Queries
-export const getGptResponses: GetGptResponses<void, GptResponse[]> = async (_args, context) => {
-  if (!context.user) {
-    throw new HttpError(401);
-  }
-  return context.entities.GptResponse.findMany({
-    where: {
-      user: {
-        id: context.user.id,
-      },
-    },
-  });
-};
-
-export const getAllTasksByUser: GetAllTasksByUser<void, Task[]> = async (_args, context) => {
-  if (!context.user) {
-    throw new HttpError(401);
-  }
-  return context.entities.Task.findMany({
-    where: {
-      user: {
-        id: context.user.id,
-      },
+      userId: context.user.id
     },
     orderBy: {
-      createdAt: 'desc',
-    },
+      uploadedAt: 'desc'
+    }
   });
 };
-//#endregion

@@ -5,8 +5,7 @@ import type { ResumeScreeningResult } from './types';
 import { cn } from '../client/cn';
 import {
   analyzeResumes,
-  deleteResume,
-  uploadResume,
+  uploadResumes,
   useQuery,
   getAllResumes,
 } from 'wasp/client/operations';
@@ -42,13 +41,13 @@ function ResumeUploadForm() {
   const { data: existingResumes, isLoading: isLoadingResumes } = useQuery(getAllResumes);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles(Array.from(e.target.files));
+    if (e.target.files?.length) {
+      setFiles(prevFiles => [...prevFiles, ...Array.from(e.target.files!)]);
     }
   };
 
   const handleDeleteFile = (index: number) => {
-    setFiles(files.filter((_, i) => i !== index));
+    setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
   const handleAnalyze = async () => {
@@ -56,13 +55,10 @@ function ResumeUploadForm() {
 
     setIsAnalyzing(true);
     try {
-      // First upload all resumes
-      const uploadPromises = files.map(file => uploadResume({ file }));
-      await Promise.all(uploadPromises);
-
-      // Then analyze them against the job description
+      await uploadResumes({ files });
       const results = await analyzeResumes({ jobDescription });
       setResults(results);
+      setFiles([]); // Clear files after successful upload
     } catch (err: any) {
       window.alert('Error: ' + (err.message || 'Something went wrong'));
     } finally {
@@ -74,6 +70,19 @@ function ResumeUploadForm() {
     <div className='flex flex-col gap-6'>
       <div className='space-y-4'>
         <div>
+          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+            Job Description
+          </label>
+          <textarea
+            value={jobDescription}
+            onChange={(e) => setJobDescription(e.target.value)}
+            placeholder='Paste the job description here...'
+            rows={6}
+            className='w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-yellow-500 focus:border-yellow-500'
+          />
+        </div>
+
+        <div className='mt-4'>
           <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
             Upload Resumes (PDF, DOC, DOCX)
           </label>
@@ -103,19 +112,6 @@ function ResumeUploadForm() {
           </div>
         )}
 
-        <div className='mt-4'>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-            Job Description
-          </label>
-          <textarea
-            value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
-            placeholder='Paste the job description here...'
-            rows={6}
-            className='w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-yellow-500 focus:border-yellow-500'
-          />
-        </div>
-
         <button
           onClick={handleAnalyze}
           disabled={isAnalyzing || !files.length || !jobDescription}
@@ -138,17 +134,33 @@ function ResumeUploadForm() {
       </div>
 
       {results.length > 0 && (
-        <div className='space-y-4'>
+        <div className='space-y-6 mt-8'>
           <h3 className='text-lg font-medium text-gray-900 dark:text-white'>Analysis Results</h3>
           {results.map((result, index) => (
             <div
               key={index}
-              className='p-4 rounded-lg border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700'
+              className='p-6 rounded-lg border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 space-y-4'
             >
-              <div className='flex justify-between items-center mb-2'>
-                <h4 className='font-medium text-gray-900 dark:text-white'>{result.candidateName}</h4>
+              <div className='flex justify-between items-center'>
+                <div className='space-y-1'>
+                  <h4 className='text-xl font-medium text-gray-900 dark:text-white'>{result.candidateName}</h4>
+                  {(result.email || result.phoneNumber || result.linkedinProfileUrl) && (
+                    <div className='text-sm text-gray-500 dark:text-gray-400 space-y-0.5'>
+                      <p className='font-medium text-gray-700 dark:text-gray-300'>File Name: {result.resumeFileName}</p>
+                      <p className='font-medium text-gray-700 dark:text-gray-300'>Contact Information:</p>
+                      {result.email && <div>📧 {result.email}</div>}
+                      {result.phoneNumber && <div>📱 {result.phoneNumber}</div>}
+                      {result.linkedinProfileUrl && (
+                        <a href={result.linkedinProfileUrl} target="_blank" rel="noopener noreferrer" 
+                           className='text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300'>
+                          🔗 LinkedIn Profile: {result.linkedinProfileUrl}
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
                 <span className={cn(
-                  'px-3 py-1 rounded-full text-sm font-medium',
+                  'px-4 py-2 rounded-full text-sm font-medium',
                   result.matchPercentage >= 80 ? 'bg-green-100 text-green-800' :
                   result.matchPercentage >= 60 ? 'bg-yellow-100 text-yellow-800' :
                   'bg-red-100 text-red-800'
@@ -156,9 +168,42 @@ function ResumeUploadForm() {
                   {result.matchPercentage}% Match
                 </span>
               </div>
-              <p className='text-sm text-gray-600 dark:text-gray-300'>{result.analysis}</p>
-              <div className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
-                <strong>Key Skills:</strong> {result.keySkills.join(', ')}
+
+              <div className='prose dark:prose-invert max-w-none'>
+                <p className='text-gray-600 dark:text-gray-300'>{result.analysis}</p>
+              </div>
+
+              <div className='space-y-3'>
+                <div>
+                  <h5 className='font-medium text-gray-700 dark:text-gray-300'>Key Skills</h5>
+                  <div className='flex flex-wrap gap-2 mt-2'>
+                    {result.keySkills.map((skill, i) => (
+                      <span key={i} className='px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm'>
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h5 className='font-medium text-gray-700 dark:text-gray-300'>Highlights</h5>
+                  <ul className='list-disc pl-5 mt-2 space-y-1'>
+                    {result.highlights.map((highlight, i) => (
+                      <li key={i} className='text-gray-600 dark:text-gray-300'>{highlight}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {result.redFlags && result.redFlags.length > 0 && (
+                  <div>
+                    <h5 className='font-medium text-gray-700 dark:text-gray-300'>Areas of Concern</h5>
+                    <ul className='list-disc pl-5 mt-2 space-y-1'>
+                      {result.redFlags.map((flag, i) => (
+                        <li key={i} className='text-red-600 dark:text-red-400'>{flag}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           ))}

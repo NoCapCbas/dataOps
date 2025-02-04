@@ -1,10 +1,8 @@
-
-
 export type Resume = {
   id: string;
   fileName: string;
   fileUrl: string;
-  fileType: 'pdf' | 'doc' | 'docx';
+  fileType: string;
   content: string;
   uploadedAt: Date;
   userId: string;
@@ -23,29 +21,20 @@ export type JobDescription = {
 export type ResumeScreeningResult = {
   id: string;
   resumeId: string;
-  jobDescriptionId: string;
+  resumeFileName: string;
   candidateName: string;
   matchPercentage: number;
   analysis: string;
   keySkills: string[];
-  skillMatches: {
-    required: {
-      skill: string;
-      found: boolean;
-      context?: string;
-    }[];
-    preferred: {
-      skill: string;
-      found: boolean;
-      context?: string;
-    }[];
-  };
-  experienceYears?: number;
-  educationLevel?: string;
   highlights: string[];
   redFlags?: string[];
   createdAt: Date;
+  userId: string;
+  phoneNumber?: string;
+  email?: string;
+  linkedinProfileUrl?: string; 
 };
+
 
 export type ScreeningStatus = 'pending' | 'processing' | 'completed' | 'failed';
 
@@ -64,7 +53,6 @@ export type BatchScreeningJob = {
 // Request/Response types for the API
 export type AnalyzeResumesRequest = {
   jobDescription: string;
-  resumeIds?: string[];
 };
 
 export type AnalyzeResumesResponse = {
@@ -72,12 +60,10 @@ export type AnalyzeResumesResponse = {
   results: ResumeScreeningResult[];
 };
 
-export type UploadResumeRequest = {
-  file: File;
+export type UploadResumesRequest = {
+  files: File[];
 };
 
-export type UploadResumeResponse = {
-  resumeId: string;
-  fileName: string;
-  fileUrl: string;
+export type UploadResumesResponse = {
+  resumeIds: string[];
 };

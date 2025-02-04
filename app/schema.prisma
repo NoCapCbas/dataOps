@@ -28,6 +28,8 @@ model User {
   contactFormMessages       ContactFormMessage[]
   tasks                     Task[]
   files                     File[]
+  resumes                   Resume[]
+  screeningResults          ResumeScreeningResult[]
 }
 
 model GptResponse {
@@ -111,4 +113,35 @@ model ContactFormMessage {
   content                   String
   isRead                    Boolean         @default(false)
   repliedAt                 DateTime?
+}
+
+model Resume {
+  id          String   @id @default(uuid())
+  fileName    String
+  fileUrl     String
+  fileType    String
+  content     String   @db.Text
+  uploadedAt  DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  screeningResults ResumeScreeningResult[]
+}
+
+model ResumeScreeningResult {
+  id              String   @id @default(uuid())
+  resumeId        String
+  resume          Resume   @relation(fields: [resumeId], references: [id])
+  candidateName   String
+  matchPercentage Float
+  analysis        String   @db.Text
+  keySkills       String[]
+  highlights      String[]
+  redFlags        String[]
+  createdAt       DateTime @default(now())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  phoneNumber     String?
+  email           String?
+  linkedinProfileUrl String?
+
 }
