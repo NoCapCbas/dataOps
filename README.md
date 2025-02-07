@@ -23,3 +23,7 @@ fetchOps Basic $10/month plan, more plans coming soon
 # Resources
 yellow-500: #EAB308
 illustrations: https://undraw.co/ 
+
+test user
+u:dev@localhost.com
+p:123456

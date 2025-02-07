@@ -346,24 +346,7 @@ job sendNewsletter {
 }
 //#endregion
 
-route ResumeScreenerRoute { path: "/resume-screener", to: ResumeScreenerPage }
-page ResumeScreenerPage {
-  authRequired: true,
-  component: import ResumeScreenerPage from "@src/ai-resume-screener/ResumeScreenerPage"
-}
-
-query getAllResumes {
-  fn: import { getAllResumes } from "@src/ai-resume-screener/operations",
-  entities: [User, Resume]
-}
-
-action uploadResumes {
-  fn: import { uploadResumes } from "@src/ai-resume-screener/operations",
-  entities: [User, Resume]
-}
-
-
-action analyzeResumes {
-  fn: import { analyzeResumes } from "@src/ai-resume-screener/operations",
-  entities: [User, Resume, ResumeScreeningResult]
+action sendInquiryEmail {
+  fn: import { sendInquiryEmail } from "@src/server/operations/contact",
+  entities: [User]
 }

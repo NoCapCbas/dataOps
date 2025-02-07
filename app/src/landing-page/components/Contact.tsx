@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CgSpinner } from 'react-icons/cg';
+// import { sendInquiryEmail } from '@wasp/server/sendInquiryEmail';
+
+const sendInquiryEmail = async (data: ContactFormData) => {
+  console.log(data);
+};
 
 type ContactFormData = {
   fullName: string;
   email: string;
-  budget: string;
-  urls: string;
-  message: string;
+  apiType: string;
+  useCase: string;
+  expectedVolume: string;
+  requirements: string;
 };
 
 export default function ContactPage() {
@@ -24,12 +30,7 @@ export default function ContactPage() {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     try {
-      // TODO: Implement your form submission logic here
-      console.log('Form data:', data);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await sendInquiryEmail(data);
       setSubmitted(true);
       reset();
     } catch (error) {
@@ -45,26 +46,26 @@ export default function ContactPage() {
       <div className='max-w-2xl mx-auto'>
         <div className='text-center mb-10'>
           <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-4'>
-            Custom Web Scraping Solution
+            Request Custom API Solution
           </h1>
           <p className='text-lg text-gray-600 dark:text-gray-300'>
-            Tell us about your data extraction needs and we'll get back to you within 24 hours.
+            Tell us about your API needs and we'll explore adding it to our toolbox.
           </p>
         </div>
 
         {submitted ? (
           <div className='bg-green-50 dark:bg-green-900 p-6 rounded-lg text-center'>
             <h3 className='text-lg font-medium text-green-800 dark:text-green-100'>
-              Thank you for your inquiry!
+              Thank you for your request!
             </h3>
             <p className='text-green-700 dark:text-green-200 mt-2'>
-              We'll review your requirements and contact you shortly.
+              We'll review your requirements and contact you within 24 hours.
             </p>
             <button
               onClick={() => setSubmitted(false)}
               className='mt-4 text-green-600 dark:text-green-300 underline'
             >
-              Submit another inquiry
+              Submit another request
             </button>
           </div>
         ) : (
@@ -106,56 +107,55 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor='budget' className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
-                Budget (USD) *
-              </label>
-              <select
-                id='budget'
-                {...register('budget', { required: 'Please select a budget range' })}
-                className='mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-yellow-500 focus:outline-none focus:ring-yellow-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white'
-              >
-                <option value=''>Select a range</option>
-                <option value='100-500'>$100 - $500</option>
-                <option value='500-1000'>$500 - $1,000</option>
-                <option value='1000-2500'>$1,000 - $2,500</option>
-                <option value='2500-5000'>$2,500 - $5,000</option>
-                <option value='5000-10000'>$5,000 - $10,000</option>
-                <option value='10000+'>$10,000+</option>
-              </select>
-              {errors.budget && (
-                <p className='mt-1 text-sm text-red-600'>{errors.budget.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor='urls' className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
-                URLs to Scrape * <span className='text-gray-500'>(separate by comma)</span>
+              <label htmlFor='useCase' className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+                Type of API and Use Case Description *
               </label>
               <textarea
-                id='urls'
-                {...register('urls', { required: 'Please provide URLs to scrape' })}
+                id='useCase'
+                {...register('useCase', { required: 'Please describe your use case' })}
                 rows={3}
                 className='mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-yellow-500 focus:outline-none focus:ring-yellow-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white'
-                placeholder='https://example1.com, https://example2.com'
+                placeholder='Describe how you plan to use this API...'
               />
-              {errors.urls && (
-                <p className='mt-1 text-sm text-red-600'>{errors.urls.message}</p>
+              {errors.useCase && (
+                <p className='mt-1 text-sm text-red-600'>{errors.useCase.message}</p>
               )}
             </div>
 
             <div>
-              <label htmlFor='message' className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
-                Additional Details *
+              <label htmlFor='expectedVolume' className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+                Expected Monthly Volume *
+              </label>
+              <select
+                id='expectedVolume'
+                {...register('expectedVolume', { required: 'Please select expected volume' })}
+                className='mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-yellow-500 focus:outline-none focus:ring-yellow-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white'
+              >
+                <option value=''>Select volume range</option>
+                <option value='1-1000'>1 - 1,000 calls</option>
+                <option value='1001-10000'>1,001 - 10,000 calls</option>
+                <option value='10001-100000'>10,001 - 100,000 calls</option>
+                <option value='100001-1000000'>100,001 - 1,000,000 calls</option>
+                <option value='1000000+'>1,000,000+ calls</option>
+              </select>
+              {errors.expectedVolume && (
+                <p className='mt-1 text-sm text-red-600'>{errors.expectedVolume.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor='requirements' className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+                Specific Requirements *
               </label>
               <textarea
-                id='message'
-                {...register('message', { required: 'Please provide project details' })}
+                id='requirements'
+                {...register('requirements', { required: 'Please provide specific requirements' })}
                 rows={4}
                 className='mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-yellow-500 focus:outline-none focus:ring-yellow-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white'
-                placeholder='Please describe what data you need and any specific requirements...'
+                placeholder='Include details about response time requirements, data format, security needs, etc...'
               />
-              {errors.message && (
-                <p className='mt-1 text-sm text-red-600'>{errors.message.message}</p>
+              {errors.requirements && (
+                <p className='mt-1 text-sm text-red-600'>{errors.requirements.message}</p>
               )}
             </div>
 
@@ -171,7 +171,7 @@ export default function ContactPage() {
                     Submitting...
                   </>
                 ) : (
-                  'Submit Inquiry'
+                  'Submit Request'
                 )}
               </button>
             </div>

@@ -12,36 +12,36 @@ export const landingPageNavigationItems: NavigationItem[] = [
   // { name: 'Blog', to: BlogUrl },
 ];
 export const features = [
-  {
-    name: 'Custom Data Extraction',
-    description: 'We can build tailored data extraction solutions for your business.',
-    icon: '🎯',
-  },
-  {
-    name: 'Multiple Data Formats',
-    description: 'Get your data in the format you need JSON, CSV, Excel, etc.',
-    icon: '📊',
-  },
-  {
-    name: 'On Time Delivery',
-    description: 'We value your time and will deliver on time.',
-    icon: '🕒',
-  },
-  {
-    name: 'Any Public Data Source',
-    description: 'We can scrape any public data source.',
-    icon: '🌐',
-  },
-  {
-    name: 'Compliance First',
-    description: 'Ethical scraping practices that respect robots.txt and website terms of service.',
-    icon: '🛡️',
-  },
-  {
-    name: 'No Code Required',
-    description: 'No code required. We handle the scraping and data extraction.',
-    icon: '🤖',
-  },
+    {
+      name: "99.99% Uptime Guarantee",
+      description: "Enterprise-grade reliability with redundant infrastructure and automatic failover. Your services stay running, guaranteed.",
+      icon: "⚡"
+    },
+    {
+      name: "Ultra-Low Latency",
+      description: "Global CDN with edge locations worldwide ensures response times under 100ms. Speed you can count on.",
+      icon: "🚀"
+    },
+    {
+      name: "Single API Key",
+      description: "Access all APIs with one key. Simple integration, unified billing, and centralized usage tracking across all services.",
+      icon: "🔑"
+    },
+    {
+      name: "Pay-As-You-Go",
+      description: "Only pay for what you use. No minimum fees, no long-term contracts. Scale up or down as your needs change.",
+      icon: "💳"
+    },
+    {
+      name: "Real-Time Dashboard",
+      description: "Monitor usage, performance, and costs in real-time. Clear analytics and insights for all your API consumption.",
+      icon: "📊"
+    },
+    {
+      name: "Support",
+      description: "Expert support team available around the clock. Get help when you need it, no matter your time zone.",
+      icon: "🛟"
+    }
 ];
 export const testimonials = [
   {
@@ -69,26 +69,38 @@ export const testimonials = [
 
 
 export const faqs = [
-  {
-    id: 1,
-    question: 'How quickly can you set up a new scraping project?',
-    answer: 'Most projects can be set up within 2-3 business days. Complex projects might take up to a week.',
-  },
-  {
-    id: 2,
-    question: 'What about rate limiting and IP blocking?',
-    answer: 'We use advanced proxy rotation and respect rate limits to ensure reliable data collection.',
-  },
-  {
-    id: 3,
-    question: 'Is scraping legal?',
-    answer: 'We follow ethical scraping practices, respect robots.txt, and only scrape publicly available data. If scraping was illegal, google would not exist.',
-  },
-  {
-    id: 4,
-    question: 'What happens if website structure changes?',
-    answer: 'We monitor all scrapers 24/7 and quickly adapt to any website changes to ensure continuous data flow.',
-  },
+    {
+      id: 1,
+      question: "How does API Toolbox pricing work?",
+      answer: "We offer simple, usage-based pricing with no hidden fees. Pay only for the API calls you make, with volume discounts available. Start with our free tier to test the platform.",
+    },
+    {
+      id: 2,
+      question: "What kind of support do you provide?",
+      answer: "We offer technical support via email, chat, and priority phone support for enterprise customers. Our documentation is comprehensive and regularly updated. We get back to you within 24 hours.",
+    },
+    {
+      id: 3,
+      question: "How reliable is the API Toolbox platform?",
+      answer: "We maintain 99.99% uptime with redundant infrastructure across multiple regions. All APIs are monitored 24/7 with automatic failover systems.",
+    },
+    {
+      id: 4,
+      question: "How do I get started?",
+      answer: "Sign up and get free credits, get your API key, and start making requests immediately. Our quick-start guides will help you integrate within minutes.",
+      href: "/signup"
+    },
+    {
+      id: 5,
+      question: "Do you offer custom solutions?",
+      answer: "Yes, we provide enterprise solutions with custom integrations, dedicated support, and SLA guarantees. Contact us to learn more.",
+      href: "/#contact"
+    },
+    {
+      id: 6,
+      question: "What security measures are in place?",
+      answer: "We use industry-standard encryption, regular security audits, and comply with SOC 2 and GDPR requirements. All data is encrypted in transit and at rest.",
+    }
 ];
 
 export const footerNavigation = {
