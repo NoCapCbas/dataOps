@@ -1,5 +1,5 @@
 # Project Intention
-leadOps is a Productized Lead Extraction/Scraping Service by SavviLabs
+dataOps is a web scraping and data crawling service by SavviLabs
 
 # Technology Used to Develop this Project
 - astrojs
