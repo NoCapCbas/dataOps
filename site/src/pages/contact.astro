@@ -9,33 +9,51 @@ import { Icon } from "astro-icon/components";
 <Layout title="Contact">
   <Container>
     <Sectionhead>
-      <Fragment slot="title">Contact</Fragment>
-      <Fragment slot="desc">We are a here to help.</Fragment>
+      <Fragment slot="title">Get a Free Consultation</Fragment>
+      <Fragment slot="desc">Tell us about your data needs and receive a quote within 24 hours.</Fragment>
     </Sectionhead>
 
     <div class="grid md:grid-cols-2 gap-10 mx-auto max-w-4xl mt-16">
       <div>
-        <h2 class="font-medium text-2xl text-gray-800">Contact dataOps</h2>
+        <h2 class="font-medium text-2xl text-gray-800">Why work with dataOps?</h2>
         <p class="text-lg leading-relaxed text-slate-500 mt-3">
-          Have something to say? We are here to help. Fill up the form or send
-          email or call phone.
+          We help businesses save time and resources by handling all their web scraping and data extraction needs. From simple data pulls to complex multi-source pipelines, our team delivers accurate, structured data on your schedule.
         </p>
-        <div class="mt-5">
-          <!-- <div class="flex items-center mt-2 space-x-2 text-gray-600">
-            <Icon class="text-gray-400 w-4 h-4" name="uil:map-marker" />
-            <span>1734 Sanfransico, CA 93063</span>
-          </div> -->
-          <!-- <div class="flex items-center mt-2 space-x-2 text-gray-600">
-            <Icon class="text-gray-400 w-4 h-4" name="uil:envelope" /><a
-              href="mailto:hello@astroshipstarter.com"
-              >hello@astroshipstarter.com</a
-            >
-          </div> -->
-          <!-- <div class="flex items-center mt-2 space-x-2 text-gray-600">
-            <Icon class="text-gray-400 w-4 h-4" name="uil:phone" /><a
-              href="tel:+1 (987) 4587 899">+1 (987) 4587 899</a
-            >
-          </div> -->
+
+        <div class="mt-8 space-y-4">
+          <div class="flex gap-3 items-start">
+            <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0 flex items-center justify-center">
+              <Icon class="text-white w-4 h-4" name="bx:bxs-file-find" />
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800">Bring Your Own Source</h3>
+              <p class="text-slate-500 text-sm">Provide any website or platform and we handle the extraction.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0 flex items-center justify-center">
+              <Icon class="text-white w-4 h-4" name="bx:bxs-data" />
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800">Any Data Format</h3>
+              <p class="text-slate-500 text-sm">CSV, JSON, database, API — we deliver data how you need it.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0 flex items-center justify-center">
+              <Icon class="text-white w-4 h-4" name="bx:bxs-package" />
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800">On-Demand Delivery</h3>
+              <p class="text-slate-500 text-sm">One-time pulls or recurring schedules tailored to your workflow.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 p-4 bg-slate-50 rounded-lg border border-slate-200">
+          <p class="text-sm text-slate-600">
+            <span class="font-semibold text-gray-800">Ready to get started?</span> Fill out the form and our team will review your requirements and get back to you with a detailed proposal.
+          </p>
         </div>
       </div>
       <div>
