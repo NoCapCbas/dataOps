@@ -2,60 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
-import PricingCard from "@components/pricing.astro";
-
-const pricing = [
-  {
-    name: "Starter",
-    price: "Custom",
-    popular: false,
-    features: [
-      "Single data source",
-      "Up to 10,000 records",
-      "CSV or JSON delivery",
-      "One-time extraction",
-      "Email support",
-    ],
-    button: {
-      text: "Get a Quote",
-      link: "/contact",
-    },
-  },
-  {
-    name: "Growth",
-    price: "Custom",
-    popular: true,
-    features: [
-      "Multiple data sources",
-      "Up to 100,000 records",
-      "Any data format",
-      "Recurring delivery schedules",
-      "Data pipeline setup",
-      "Priority support",
-    ],
-    button: {
-      text: "Get a Quote",
-      link: "/contact",
-    },
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    popular: false,
-    features: [
-      "Unlimited data sources",
-      "Unlimited records",
-      "Custom data pipelines",
-      "Automation & scheduling",
-      "Dedicated account manager",
-      "SLA & uptime guarantees",
-    ],
-    button: {
-      text: "Contact Us",
-      link: "/contact",
-    },
-  },
-];
+import { Icon } from "astro-icon/components";
 ---
 
 <Layout title="Pricing">
@@ -63,23 +10,81 @@ const pricing = [
     <Sectionhead>
       <Fragment slot="title">Pricing</Fragment>
       <Fragment slot="desc">
-        Every project is unique. Tell us what you need and we'll build a plan that fits.
+        Tailored solutions designed around your project's unique requirements.
       </Fragment>
     </Sectionhead>
 
-    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-screen-lg mt-12">
-      {pricing.map((item) => <PricingCard plan={item} />)}
+    <div class="flex flex-col gap-8 mx-auto max-w-3xl mt-16">
+      <p class="text-lg leading-relaxed text-slate-500">
+        dataOps delivers tailored data solutions designed to align with the unique requirements of your project. Our approach is consultative, strategic, and results-driven.
+      </p>
+      <p class="text-lg leading-relaxed text-slate-500">
+        We begin by conducting a comprehensive assessment of your project objectives and operational challenges. This allows us to develop an integrated strategy that seamlessly aligns with your existing workflows, prioritizing scalability, efficiency, and impact.
+      </p>
+      <p class="text-lg leading-relaxed text-slate-500">
+        We emphasize practicality and ease of implementation, providing data solutions that are not only robust but also designed for seamless execution. Our goal is to simplify data management complexities, enabling your organization to focus on core business priorities with confidence.
+      </p>
     </div>
 
-    <div class="mt-16 text-center max-w-2xl mx-auto">
-      <h3 class="text-2xl font-bold text-gray-800">Not sure which plan is right for you?</h3>
-      <p class="text-lg text-slate-500 mt-3">
-        Reach out and our team will help you find the best solution for your data needs. We offer flexible pricing based on volume, complexity, and delivery frequency.
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mx-auto max-w-screen-lg mt-16">
+      <div class="p-6 border border-slate-200 rounded-lg text-center">
+        <div class="bg-black rounded-full p-2 w-10 h-10 mx-auto flex items-center justify-center">
+          <Icon class="text-white w-5 h-5" name="bx:bxs-file-find" />
+        </div>
+        <h3 class="font-semibold text-lg text-gray-800 mt-4">Project Assessment</h3>
+        <p class="text-slate-500 mt-2 text-sm leading-relaxed">We analyze your data sources, volume, and delivery needs to scope the work accurately.</p>
+      </div>
+      <div class="p-6 border border-slate-200 rounded-lg text-center">
+        <div class="bg-black rounded-full p-2 w-10 h-10 mx-auto flex items-center justify-center">
+          <Icon class="text-white w-5 h-5" name="bx:bxs-data" />
+        </div>
+        <h3 class="font-semibold text-lg text-gray-800 mt-4">Custom Proposal</h3>
+        <p class="text-slate-500 mt-2 text-sm leading-relaxed">You receive a detailed proposal with clear deliverables, timelines, and transparent pricing.</p>
+      </div>
+      <div class="p-6 border border-slate-200 rounded-lg text-center">
+        <div class="bg-black rounded-full p-2 w-10 h-10 mx-auto flex items-center justify-center">
+          <Icon class="text-white w-5 h-5" name="bx:bxs-package" />
+        </div>
+        <h3 class="font-semibold text-lg text-gray-800 mt-4">Flexible Engagement</h3>
+        <p class="text-slate-500 mt-2 text-sm leading-relaxed">One-time projects or ongoing retainers — we structure the engagement around what works for you.</p>
+      </div>
+    </div>
+
+    <div class="mt-16 p-8 bg-slate-50 rounded-lg border border-slate-200 max-w-3xl mx-auto">
+      <h3 class="text-xl font-bold text-gray-800">What factors influence pricing?</h3>
+      <ul class="mt-4 space-y-3">
+        <li class="flex gap-3 items-start text-slate-600">
+          <span class="text-black font-bold mt-0.5">—</span>
+          <span>Number and complexity of data sources</span>
+        </li>
+        <li class="flex gap-3 items-start text-slate-600">
+          <span class="text-black font-bold mt-0.5">—</span>
+          <span>Volume of records to extract</span>
+        </li>
+        <li class="flex gap-3 items-start text-slate-600">
+          <span class="text-black font-bold mt-0.5">—</span>
+          <span>Delivery format and integration requirements</span>
+        </li>
+        <li class="flex gap-3 items-start text-slate-600">
+          <span class="text-black font-bold mt-0.5">—</span>
+          <span>Frequency of data delivery (one-time vs. recurring)</span>
+        </li>
+        <li class="flex gap-3 items-start text-slate-600">
+          <span class="text-black font-bold mt-0.5">—</span>
+          <span>Custom pipeline or automation needs</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="mt-16 mb-16 bg-black rounded-lg p-8 md:p-12 text-center max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-white">Get your custom proposal</h2>
+      <p class="text-lg text-gray-300 mt-3 max-w-xl mx-auto">
+        To receive a customized proposal tailored to your specific needs, contact us today. Our team is available to discuss how dataOps can drive your business forward.
       </p>
       <a
         href="/contact"
-        class="inline-block mt-6 px-8 py-3 bg-black text-white rounded-md font-medium hover:bg-gray-800 transition-colors">
-        Schedule a Free Consultation
+        class="inline-block mt-6 px-8 py-3 bg-white text-black rounded-md font-medium hover:bg-gray-100 transition-colors">
+        Get My Free Quote
       </a>
     </div>
   </Container>
