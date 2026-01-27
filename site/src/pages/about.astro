@@ -4,54 +4,179 @@ import { Picture } from "astro:assets";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
+import { Icon } from "astro-icon/components";
 
 // Filter team entries with 'draft: false' & date before current date
 const publishedTeamMembers = await getCollection("team", ({ data }) => {
   return !data.draft && data.publishDate < new Date();
 });
+
+const values = [
+  {
+    title: "Accuracy First",
+    description: "Every data point we deliver is validated and structured. We don't cut corners on quality.",
+    icon: "bx:bxs-check-shield",
+  },
+  {
+    title: "Transparency",
+    description: "Clear communication, honest timelines, and no hidden fees. You always know what you're getting.",
+    icon: "bx:bxs-show",
+  },
+  {
+    title: "Client-Driven",
+    description: "Your requirements shape our process. We build solutions around your needs, not the other way around.",
+    icon: "bx:bxs-user-check",
+  },
+  {
+    title: "Reliability",
+    description: "Consistent delivery on schedule. We treat your deadlines as our own.",
+    icon: "bx:bxs-time-five",
+  },
+];
+
+const stats = [
+  { value: "50+", label: "Projects Delivered" },
+  { value: "1M+", label: "Records Extracted" },
+  { value: "24hr", label: "Average Response Time" },
+  { value: "100%", label: "Client Satisfaction" },
+];
 ---
 
 <Layout title="About">
   <Container>
     <Sectionhead>
-      <Fragment slot="title">About</Fragment>
-      <Fragment slot="desc">We are a small passionate team.</Fragment>
+      <Fragment slot="title">About dataOps</Fragment>
+      <Fragment slot="desc">Your trusted partner for web scraping, data crawling, and custom data solutions.</Fragment>
     </Sectionhead>
 
+    <!-- Mission -->
     <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-16">
       <h2 class="font-bold text-3xl text-gray-800">
-        Empowering the world with Astro.
+        Turning raw web data into business intelligence.
       </h2>
       <p class="text-lg leading-relaxed text-slate-500">
-        We're a multi-cultural team from around the world! We come from diverse
-        backgrounds, bringing different personalities, experiences and skills to
-        the job. This is what makes our team so special.
+        dataOps partners with businesses to extract, organize, and deliver web data at scale. Whether you need one-time data pulls or ongoing automated pipelines, we handle the technical complexity so you can focus on what the data tells you.
+      </p>
+      <p class="text-lg leading-relaxed text-slate-500">
+        We go beyond basic web scraping. Our team builds custom extraction and crawling solutions tailored to your specific sources, formats, and delivery requirements — serving companies across e-commerce, real estate, finance, research, and more.
       </p>
     </div>
-    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-4xl mt-12">
-      {
-        publishedTeamMembers.map((teamMemberEntry) => (
-          <div class="group">
-            <div class="w-full aspect-square">
-              <Picture
-                src={teamMemberEntry.data.avatar.src}
-                alt={teamMemberEntry.data.avatar.alt}
-                sizes="(max-width: 800px) 100vw, 400px"
-                width={400}
-                height={400}
-                class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl bg-white object-cover object-center aspect-square"
-              />
-            </div>
 
-            <div class="mt-4 text-center">
-              <h2 class="text-lg text-gray-800">{teamMemberEntry.data.name}</h2>
-              <h3 class="text-sm text-slate-500">
-                {teamMemberEntry.data.title}
-              </h3>
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mx-auto max-w-4xl mt-16">
+      {stats.map((stat) => (
+        <div class="text-center">
+          <div class="text-4xl font-bold text-gray-800">{stat.value}</div>
+          <div class="text-sm text-slate-500 mt-1">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+
+    <!-- What Sets Us Apart -->
+    <div class="mx-auto max-w-4xl mt-24">
+      <h2 class="font-bold text-3xl text-gray-800 text-center">
+        What Sets Us Apart
+      </h2>
+      <p class="text-lg text-slate-500 mt-3 text-center max-w-2xl mx-auto">
+        We're not a generic data vendor. We build custom solutions designed around your exact requirements.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-10 mt-12">
+        <div class="p-6 border border-slate-200 rounded-lg">
+          <h3 class="font-semibold text-lg text-gray-800">Hands-Off Service</h3>
+          <p class="text-slate-500 mt-2 leading-relaxed">
+            You tell us what data you need — we handle everything from source analysis and scraper development to data cleaning and delivery. No technical work on your end.
+          </p>
+        </div>
+        <div class="p-6 border border-slate-200 rounded-lg">
+          <h3 class="font-semibold text-lg text-gray-800">Built for Scale</h3>
+          <p class="text-slate-500 mt-2 leading-relaxed">
+            From hundreds of records to millions, our infrastructure adapts to your volume. We handle rate limiting, proxy rotation, and anti-bot measures behind the scenes.
+          </p>
+        </div>
+        <div class="p-6 border border-slate-200 rounded-lg">
+          <h3 class="font-semibold text-lg text-gray-800">Flexible Delivery</h3>
+          <p class="text-slate-500 mt-2 leading-relaxed">
+            CSV, JSON, databases, APIs — we deliver data in whatever format fits your workflow. One-time exports or recurring automated pipelines, your call.
+          </p>
+        </div>
+        <div class="p-6 border border-slate-200 rounded-lg">
+          <h3 class="font-semibold text-lg text-gray-800">Industry Experience</h3>
+          <p class="text-slate-500 mt-2 leading-relaxed">
+            We've worked with companies across e-commerce, real estate, finance, research, and technology — and understand the data challenges unique to each space.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Values -->
+    <div class="mx-auto max-w-4xl mt-24">
+      <h2 class="font-bold text-3xl text-gray-800 text-center">
+        Our Values
+      </h2>
+
+      <div class="grid sm:grid-cols-2 gap-12 mt-12">
+        {values.map((item) => (
+          <div class="flex gap-4 items-start">
+            <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0">
+              <Icon class="text-white" name={item.icon} />
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg">{item.title}</h3>
+              <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
             </div>
           </div>
-        ))
-      }
+        ))}
+      </div>
+    </div>
+
+    <!-- Team -->
+    <div class="mx-auto max-w-4xl mt-24">
+      <h2 class="font-bold text-3xl text-gray-800 text-center">
+        Meet the Team
+      </h2>
+      <p class="text-lg text-slate-500 mt-3 text-center max-w-2xl mx-auto">
+        A dedicated team of data specialists, engineers, and support staff committed to delivering results.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-10 mt-12">
+        {
+          publishedTeamMembers.map((teamMemberEntry) => (
+            <div class="group">
+              <div class="w-full aspect-square">
+                <Picture
+                  src={teamMemberEntry.data.avatar.src}
+                  alt={teamMemberEntry.data.avatar.alt}
+                  sizes="(max-width: 800px) 100vw, 400px"
+                  width={400}
+                  height={400}
+                  class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl bg-white object-cover object-center aspect-square"
+                />
+              </div>
+
+              <div class="mt-4 text-center">
+                <h2 class="text-lg text-gray-800">{teamMemberEntry.data.name}</h2>
+                <h3 class="text-sm text-slate-500">
+                  {teamMemberEntry.data.title}
+                </h3>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-24 mb-16 bg-black rounded-lg p-8 md:p-12 text-center">
+      <h2 class="text-3xl font-bold text-white">Let's work together</h2>
+      <p class="text-lg text-gray-300 mt-3 max-w-xl mx-auto">
+        Have a data project in mind? Tell us what you need and we'll show you how dataOps can help.
+      </p>
+      <a
+        href="/contact"
+        class="inline-block mt-6 px-8 py-3 bg-white text-black rounded-md font-medium hover:bg-gray-100 transition-colors">
+        Get My Free Quote
+      </a>
     </div>
   </Container>
 </Layout>

@@ -6,42 +6,36 @@ import PricingCard from "@components/pricing.astro";
 
 const pricing = [
   {
-    name: "Personal",
-    price: "Free",
+    name: "Starter",
+    price: "Custom",
     popular: false,
     features: [
-      "Lifetime free",
-      "Up to 3 users",
-      "Unlimited Pages",
-      "Astro Sub domain",
-      "Basic Integrations",
-      "Community Support",
+      "Single data source",
+      "Up to 10,000 records",
+      "CSV or JSON delivery",
+      "One-time extraction",
+      "Email support",
     ],
     button: {
-      text: "Get Started",
-      link: "/",
+      text: "Get a Quote",
+      link: "/contact",
     },
   },
   {
-    name: "Startup",
-    price: {
-      monthly: "$19",
-      annual: "$16",
-      discount: "10%",
-      original: "$24",
-    },
+    name: "Growth",
+    price: "Custom",
     popular: true,
     features: [
-      "All Free Features",
-      "Up to 20 users",
-      "20 Custom domains",
-      "Unlimited Collaborators",
-      "Advanced Integrations",
-      "Priority Support",
+      "Multiple data sources",
+      "Up to 100,000 records",
+      "Any data format",
+      "Recurring delivery schedules",
+      "Data pipeline setup",
+      "Priority support",
     ],
     button: {
-      text: "Get Started",
-      link: "#",
+      text: "Get a Quote",
+      link: "/contact",
     },
   },
   {
@@ -49,15 +43,15 @@ const pricing = [
     price: "Custom",
     popular: false,
     features: [
-      "All Pro Features",
-      "Unlimited Custom domains",
-      "99.99% Uptime SLA",
-      "SAML & SSO Integration",
-      "Dedicated Account Manager",
-      "24/7 Phone Support",
+      "Unlimited data sources",
+      "Unlimited records",
+      "Custom data pipelines",
+      "Automation & scheduling",
+      "Dedicated account manager",
+      "SLA & uptime guarantees",
     ],
     button: {
-      text: "Contact us",
+      text: "Contact Us",
       link: "/contact",
     },
   },
@@ -69,12 +63,24 @@ const pricing = [
     <Sectionhead>
       <Fragment slot="title">Pricing</Fragment>
       <Fragment slot="desc">
-        Simple & Predictable pricing. No Surprises.
+        Every project is unique. Tell us what you need and we'll build a plan that fits.
       </Fragment>
     </Sectionhead>
 
     <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-screen-lg mt-12">
       {pricing.map((item) => <PricingCard plan={item} />)}
+    </div>
+
+    <div class="mt-16 text-center max-w-2xl mx-auto">
+      <h3 class="text-2xl font-bold text-gray-800">Not sure which plan is right for you?</h3>
+      <p class="text-lg text-slate-500 mt-3">
+        Reach out and our team will help you find the best solution for your data needs. We offer flexible pricing based on volume, complexity, and delivery frequency.
+      </p>
+      <a
+        href="/contact"
+        class="inline-block mt-6 px-8 py-3 bg-black text-white rounded-md font-medium hover:bg-gray-800 transition-colors">
+        Schedule a Free Consultation
+      </a>
     </div>
   </Container>
 </Layout>

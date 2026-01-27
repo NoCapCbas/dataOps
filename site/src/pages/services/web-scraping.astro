@@ -1,0 +1,170 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+import Link from "@components/ui/link.astro";
+import { Icon } from "astro-icon/components";
+
+const features = [
+  {
+    title: "Any Website, Any Platform",
+    description: "We extract data from any publicly accessible website regardless of complexity — JavaScript-rendered pages, login-protected portals, or paginated listings.",
+    icon: "bx:bxs-globe",
+  },
+  {
+    title: "Structured & Clean Data",
+    description: "Raw HTML becomes organized, analysis-ready data. We clean, normalize, and structure everything before delivery.",
+    icon: "bx:bxs-data",
+  },
+  {
+    title: "Scalable Extraction",
+    description: "From hundreds to millions of records, our infrastructure scales to match your data volume requirements.",
+    icon: "bx:bxs-rocket",
+  },
+  {
+    title: "Anti-Detection Built In",
+    description: "We handle rotating proxies, CAPTCHAs, and rate limiting so you get reliable data without interruptions.",
+    icon: "bx:bxs-shield",
+  },
+  {
+    title: "Flexible Delivery Formats",
+    description: "Receive your data in CSV, JSON, Excel, database dumps, or via API — whatever fits your workflow.",
+    icon: "bx:bxs-file-export",
+  },
+  {
+    title: "Recurring or One-Time",
+    description: "Set up scheduled scrapes for ongoing monitoring or request one-time data pulls for specific projects.",
+    icon: "bx:bxs-calendar",
+  },
+];
+
+const useCases = [
+  {
+    title: "Price Monitoring",
+    description: "Track competitor pricing across marketplaces and e-commerce platforms in real time.",
+  },
+  {
+    title: "Lead Generation",
+    description: "Extract business listings, contact details, and company information from directories and platforms.",
+  },
+  {
+    title: "Market Research",
+    description: "Gather product data, reviews, and trends to inform business strategy and product development.",
+  },
+  {
+    title: "Real Estate Data",
+    description: "Collect property listings, pricing history, and market data from real estate platforms.",
+  },
+  {
+    title: "Job Market Intelligence",
+    description: "Scrape job postings, salary data, and hiring trends across job boards and company career pages.",
+  },
+  {
+    title: "Content Aggregation",
+    description: "Pull articles, news, and media from multiple sources into a unified dataset for analysis.",
+  },
+];
+---
+
+<Layout title="Web Scraping Services">
+  <Container>
+    <div class="pt-16 pb-8 md:pt-12 md:pb-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-5xl lg:text-6xl font-bold lg:tracking-tight">
+          Web Scraping Services
+        </h1>
+        <p class="text-xl mt-6 text-slate-600">
+          Extract structured data from any website at scale. We handle the complexity so you can focus on using the data that drives your business forward.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <Link href="/contact" class="flex gap-1 items-center justify-center">
+            Get My Free Quote
+          </Link>
+          <Link href="/pricing" style="outline" class="flex gap-1 items-center justify-center">
+            View Pricing
+          </Link>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16">
+      <h2 class="text-3xl lg:text-4xl font-bold lg:tracking-tight text-center">
+        How It Works
+      </h2>
+      <p class="text-lg mt-4 text-slate-600 text-center max-w-2xl mx-auto">
+        A simple, hands-off process from start to finish.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-10 mt-12 max-w-screen-lg mx-auto">
+        <div class="text-center">
+          <div class="bg-black text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto text-xl font-bold">1</div>
+          <h3 class="font-semibold text-lg mt-4">Tell Us Your Source</h3>
+          <p class="text-slate-500 mt-2">Share the website or platform you need data from, along with the specific fields you want extracted.</p>
+        </div>
+        <div class="text-center">
+          <div class="bg-black text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto text-xl font-bold">2</div>
+          <h3 class="font-semibold text-lg mt-4">We Build & Extract</h3>
+          <p class="text-slate-500 mt-2">Our team builds a custom scraper, handles all technical challenges, and extracts your data accurately.</p>
+        </div>
+        <div class="text-center">
+          <div class="bg-black text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto text-xl font-bold">3</div>
+          <h3 class="font-semibold text-lg mt-4">Receive Clean Data</h3>
+          <p class="text-slate-500 mt-2">Get structured, clean data delivered in your preferred format — on your schedule.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-24">
+      <h2 class="text-3xl lg:text-4xl font-bold lg:tracking-tight">
+        What We Offer
+      </h2>
+      <p class="text-lg mt-4 text-slate-600">
+        End-to-end web scraping built around your requirements.
+      </p>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-12 gap-16">
+        {features.map((item) => (
+          <div class="flex gap-4 items-start">
+            <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0">
+              <Icon class="text-white" name={item.icon} />
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg">{item.title}</h3>
+              <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-24">
+      <h2 class="text-3xl lg:text-4xl font-bold lg:tracking-tight text-center">
+        Common Use Cases
+      </h2>
+      <p class="text-lg mt-4 text-slate-600 text-center max-w-2xl mx-auto">
+        Businesses across industries rely on web scraping to gain a competitive edge.
+      </p>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-12 gap-8 max-w-screen-lg mx-auto">
+        {useCases.map((item) => (
+          <div class="p-6 border border-slate-200 rounded-lg">
+            <h3 class="font-semibold text-lg text-gray-800">{item.title}</h3>
+            <p class="text-slate-500 mt-2 text-sm leading-relaxed">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-24 mb-16 bg-black rounded-lg p-8 md:p-12 text-center">
+      <h2 class="text-3xl font-bold text-white">Ready to get started?</h2>
+      <p class="text-lg text-gray-300 mt-3 max-w-xl mx-auto">
+        Tell us what data you need and we'll provide a free quote within 24 hours.
+      </p>
+      <a
+        href="/contact"
+        class="inline-block mt-6 px-8 py-3 bg-white text-black rounded-md font-medium hover:bg-gray-100 transition-colors">
+        Get My Free Quote
+      </a>
+    </div>
+  </Container>
+</Layout>

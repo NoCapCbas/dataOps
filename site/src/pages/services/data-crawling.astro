@@ -1,0 +1,170 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+import Link from "@components/ui/link.astro";
+import { Icon } from "astro-icon/components";
+
+const features = [
+  {
+    title: "Large-Scale Discovery",
+    description: "Systematically crawl entire websites or domains to discover and catalog all available pages, products, or listings.",
+    icon: "bx:bxs-globe",
+  },
+  {
+    title: "Real-Time Data Collection",
+    description: "Continuously crawl data sources to capture changes as they happen — new listings, price updates, inventory shifts.",
+    icon: "bx:bxs-time-five",
+  },
+  {
+    title: "Deep Link Traversal",
+    description: "Follow links across multiple levels of a site to collect comprehensive datasets that surface scraping alone would miss.",
+    icon: "bx:bxs-network-chart",
+  },
+  {
+    title: "Automated Scheduling",
+    description: "Set crawl frequencies that match your needs — hourly, daily, weekly — and receive fresh data automatically.",
+    icon: "bx:bxs-calendar-check",
+  },
+  {
+    title: "Deduplication & Validation",
+    description: "We ensure crawled data is free of duplicates and validate records for accuracy before delivery.",
+    icon: "bx:bxs-check-shield",
+  },
+  {
+    title: "Custom Data Pipelines",
+    description: "Feed crawled data directly into your databases, data warehouses, or applications via custom pipelines.",
+    icon: "bx:bxs-data",
+  },
+];
+
+const useCases = [
+  {
+    title: "E-Commerce Monitoring",
+    description: "Crawl product catalogs across marketplaces to track pricing, availability, and new product launches.",
+  },
+  {
+    title: "SEO & Content Auditing",
+    description: "Crawl your own site or competitors to audit content, metadata, broken links, and site structure.",
+  },
+  {
+    title: "News & Media Monitoring",
+    description: "Continuously crawl news sites, blogs, and forums to track brand mentions, industry trends, and sentiment.",
+  },
+  {
+    title: "Directory & Listing Collection",
+    description: "Crawl business directories, yellow pages, and review sites to build comprehensive contact databases.",
+  },
+  {
+    title: "Academic & Research Data",
+    description: "Crawl research databases, publications, and public records to build datasets for analysis.",
+  },
+  {
+    title: "Government & Public Data",
+    description: "Collect publicly available data from government portals, regulatory filings, and open data platforms.",
+  },
+];
+---
+
+<Layout title="Data Crawling Services">
+  <Container>
+    <div class="pt-16 pb-8 md:pt-12 md:pb-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-5xl lg:text-6xl font-bold lg:tracking-tight">
+          Data Crawling Services
+        </h1>
+        <p class="text-xl mt-6 text-slate-600">
+          Automate large-scale data collection across entire websites and platforms. Capture real-time insights and structure web data efficiently.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <Link href="/contact" class="flex gap-1 items-center justify-center">
+            Get My Free Quote
+          </Link>
+          <Link href="/pricing" style="outline" class="flex gap-1 items-center justify-center">
+            View Pricing
+          </Link>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16">
+      <h2 class="text-3xl lg:text-4xl font-bold lg:tracking-tight text-center">
+        How It Works
+      </h2>
+      <p class="text-lg mt-4 text-slate-600 text-center max-w-2xl mx-auto">
+        We handle the entire crawling pipeline — you just tell us what you need.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-10 mt-12 max-w-screen-lg mx-auto">
+        <div class="text-center">
+          <div class="bg-black text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto text-xl font-bold">1</div>
+          <h3 class="font-semibold text-lg mt-4">Define Your Scope</h3>
+          <p class="text-slate-500 mt-2">Tell us which sites or domains to crawl, the data points you need, and how often you want updates.</p>
+        </div>
+        <div class="text-center">
+          <div class="bg-black text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto text-xl font-bold">2</div>
+          <h3 class="font-semibold text-lg mt-4">We Crawl & Process</h3>
+          <p class="text-slate-500 mt-2">Our crawlers systematically discover, extract, and process data across your target sources at scale.</p>
+        </div>
+        <div class="text-center">
+          <div class="bg-black text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto text-xl font-bold">3</div>
+          <h3 class="font-semibold text-lg mt-4">Get Fresh Data Delivered</h3>
+          <p class="text-slate-500 mt-2">Receive deduplicated, validated data on a recurring schedule in the format that fits your stack.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-24">
+      <h2 class="text-3xl lg:text-4xl font-bold lg:tracking-tight">
+        What We Offer
+      </h2>
+      <p class="text-lg mt-4 text-slate-600">
+        Comprehensive data crawling infrastructure managed for you.
+      </p>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-12 gap-16">
+        {features.map((item) => (
+          <div class="flex gap-4 items-start">
+            <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0">
+              <Icon class="text-white" name={item.icon} />
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg">{item.title}</h3>
+              <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-24">
+      <h2 class="text-3xl lg:text-4xl font-bold lg:tracking-tight text-center">
+        Common Use Cases
+      </h2>
+      <p class="text-lg mt-4 text-slate-600 text-center max-w-2xl mx-auto">
+        Data crawling powers critical workflows across industries.
+      </p>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-12 gap-8 max-w-screen-lg mx-auto">
+        {useCases.map((item) => (
+          <div class="p-6 border border-slate-200 rounded-lg">
+            <h3 class="font-semibold text-lg text-gray-800">{item.title}</h3>
+            <p class="text-slate-500 mt-2 text-sm leading-relaxed">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-24 mb-16 bg-black rounded-lg p-8 md:p-12 text-center">
+      <h2 class="text-3xl font-bold text-white">Ready to get started?</h2>
+      <p class="text-lg text-gray-300 mt-3 max-w-xl mx-auto">
+        Tell us what data you need and we'll provide a free quote within 24 hours.
+      </p>
+      <a
+        href="/contact"
+        class="inline-block mt-6 px-8 py-3 bg-white text-black rounded-md font-medium hover:bg-gray-100 transition-colors">
+        Get My Free Quote
+      </a>
+    </div>
+  </Container>
+</Layout>
