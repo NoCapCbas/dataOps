@@ -15,20 +15,20 @@ import Button from "./ui/button.astro";
   <div class="mb-5">
     <input
       type="text"
-      placeholder="Full Name"
+      placeholder="Name"
       required
       class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
       name="name"
     />
     <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
-      Please provide your full name.
+      Please provide your name.
     </div>
   </div>
   <div class="mb-5">
     <label for="email_address" class="sr-only">Email Address</label><input
       id="email_address"
       type="email"
-      placeholder="Work Email Address"
+      placeholder="Email Address"
       name="email"
       required
       class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
@@ -57,6 +57,8 @@ import Button from "./ui/button.astro";
       <option value="web-scraping">Web Scraping</option>
       <option value="data-extraction">Data Extraction</option>
       <option value="recurring-data">Recurring Data Delivery</option>
+      <option value="automation">Automation</option>
+      <option value="data-pipeline">Data Pipeline</option>
       <option value="custom-solution">Custom Solution</option>
       <option value="other">Other</option>
     </select>
