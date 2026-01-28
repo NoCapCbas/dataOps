@@ -74,6 +74,18 @@ import Button from "./ui/button.astro";
       Please select a service.
     </div>
   </div>
+  <div class="mb-5">
+    <select
+      name="referral"
+      class="w-full px-4 py-3 border-2 text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100">
+      <option value="" disabled selected>How did you find us? (optional)</option>
+      <option value="google">Google</option>
+      <option value="bing">Bing</option>
+      <option value="linkedin">LinkedIn</option>
+      <option value="referral">Referral</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
   <div class="mb-3">
     <textarea
       name="message"
