@@ -7,9 +7,9 @@ import { Icon } from "astro-icon/components";
   class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
   <div class="py-6 md:order-1 hidden md:block w-full max-w-xl">
     <!-- Terminal-style data carousel -->
-    <div class="rounded-xl overflow-hidden shadow-2xl bg-gray-900 border border-gray-700">
+    <div class="rounded-xl overflow-hidden shadow-2xl bg-gray-950 border border-gray-700">
       <!-- Title bar -->
-      <div class="flex items-center gap-2 px-4 py-3 bg-gray-800 border-b border-gray-700">
+      <div class="flex items-center gap-2 px-4 py-3 bg-gray-900 border-b border-gray-700">
         <div class="flex gap-1.5">
           <div class="w-3 h-3 rounded-full bg-red-500"></div>
           <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -22,7 +22,7 @@ import { Icon } from "astro-icon/components";
         <pre class="font-mono text-sm leading-relaxed transition-all duration-500" id="carousel-code"></pre>
       </div>
       <!-- Format tabs -->
-      <div class="flex gap-1 px-4 py-2.5 bg-gray-800 border-t border-gray-700">
+      <div class="flex gap-1 px-4 py-2.5 bg-gray-900 border-t border-gray-700">
         <button class="carousel-tab px-2.5 py-1 rounded text-xs font-mono transition-colors" data-index="0">CSV</button>
         <button class="carousel-tab px-2.5 py-1 rounded text-xs font-mono transition-colors" data-index="1">JSON</button>
         <button class="carousel-tab px-2.5 py-1 rounded text-xs font-mono transition-colors" data-index="2">XML</button>
@@ -75,17 +75,17 @@ import { Icon } from "astro-icon/components";
     transform: translateY(0);
   }
   /* Syntax colors */
-  .syn-key { color: #7dd3fc; }
-  .syn-str { color: #86efac; }
-  .syn-num { color: #fcd34d; }
-  .syn-punc { color: #6b7280; }
-  .syn-tag { color: #c084fc; }
-  .syn-attr { color: #7dd3fc; }
-  .syn-kw { color: #f472b6; }
-  .syn-comment { color: #6b7280; font-style: italic; }
-  .syn-col { color: #94a3b8; }
-  .syn-hdr { color: #cbd5e1; font-weight: 600; }
-  .syn-border { color: #475569; }
+  .syn-key { color: #93c5fd; }
+  .syn-str { color: #a7f3d0; }
+  .syn-num { color: #fde68a; }
+  .syn-punc { color: #9ca3af; }
+  .syn-tag { color: #d8b4fe; }
+  .syn-attr { color: #93c5fd; }
+  .syn-kw { color: #f9a8d4; }
+  .syn-comment { color: #9ca3af; font-style: italic; }
+  .syn-col { color: #cbd5e1; }
+  .syn-hdr { color: #f1f5f9; font-weight: 600; }
+  .syn-border { color: #94a3b8; }
 </style>
 
 <script is:inline>
