@@ -2,8 +2,7 @@
 import Button from "./ui/button.astro";
 ---
 
-<!-- To make this contact form work, create your free access key from https://web3forms.com/
-     Then you will get all form submissions in your email inbox. -->
+<!-- Multi-step contact form — submits to Web3Forms -->
 <form
   action="https://api.web3forms.com/submit"
   method="POST"
@@ -12,93 +11,135 @@ import Button from "./ui/button.astro";
   novalidate>
   <input type="hidden" name="access_key" value="966a1b76-6bd7-4805-bbff-cce91f22de51" />
   <input type="checkbox" class="hidden" style="display:none" name="botcheck" />
-  <div class="mb-5">
-    <input
-      type="text"
-      placeholder="Name"
-      required
-      class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
-      name="name"
-    />
-    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
-      Please provide your name.
+
+  <!-- Progress indicator -->
+  <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center gap-2" id="step-indicators">
+      <div class="step-dot active w-8 h-8 rounded-full bg-black text-white text-sm flex items-center justify-center font-medium" data-step="1">1</div>
+      <div class="w-8 h-0.5 bg-gray-300 transition-colors duration-300" id="bar-1"></div>
+      <div class="step-dot w-8 h-8 rounded-full bg-gray-200 text-gray-500 text-sm flex items-center justify-center font-medium" data-step="2">2</div>
+      <div class="w-8 h-0.5 bg-gray-300 transition-colors duration-300" id="bar-2"></div>
+      <div class="step-dot w-8 h-8 rounded-full bg-gray-200 text-gray-500 text-sm flex items-center justify-center font-medium" data-step="3">3</div>
+    </div>
+    <span class="text-sm text-slate-400" id="step-label">Step 1 of 3</span>
+  </div>
+
+  <!-- Step 1: Data source -->
+  <div id="step-1" class="form-step">
+    <label class="block text-sm font-medium text-gray-700 mb-2">What website do you need data from?</label>
+    <div class="mb-5">
+      <input
+        type="text"
+        placeholder="e.g. linkedin.com, amazon.com, zillow.com"
+        required
+        class="w-full px-4 py-3 border-2 placeholder:text-gray-400 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
+        name="source"
+        id="source-input"
+      />
+      <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
+        Please enter a website or data source.
+      </div>
+    </div>
+    <Button type="button" size="lg" block class="step-next" data-next="2">Next</Button>
+  </div>
+
+  <!-- Step 2: Data type & frequency -->
+  <div id="step-2" class="form-step hidden">
+    <label class="block text-sm font-medium text-gray-700 mb-2">What data do you need from it?</label>
+    <div class="mb-5 grid grid-cols-2 gap-2">
+      <label class="flex items-center gap-2 px-4 py-3 border-2 rounded-md cursor-pointer hover:border-gray-600 transition-colors has-[:checked]:border-black has-[:checked]:bg-gray-50">
+        <input type="checkbox" name="data_type" value="contacts" class="accent-black" />
+        <span class="text-sm text-gray-800">Contact info / leads</span>
+      </label>
+      <label class="flex items-center gap-2 px-4 py-3 border-2 rounded-md cursor-pointer hover:border-gray-600 transition-colors has-[:checked]:border-black has-[:checked]:bg-gray-50">
+        <input type="checkbox" name="data_type" value="products" class="accent-black" />
+        <span class="text-sm text-gray-800">Products / prices</span>
+      </label>
+      <label class="flex items-center gap-2 px-4 py-3 border-2 rounded-md cursor-pointer hover:border-gray-600 transition-colors has-[:checked]:border-black has-[:checked]:bg-gray-50">
+        <input type="checkbox" name="data_type" value="reviews" class="accent-black" />
+        <span class="text-sm text-gray-800">Reviews / ratings</span>
+      </label>
+      <label class="flex items-center gap-2 px-4 py-3 border-2 rounded-md cursor-pointer hover:border-gray-600 transition-colors has-[:checked]:border-black has-[:checked]:bg-gray-50">
+        <input type="checkbox" name="data_type" value="jobs" class="accent-black" />
+        <span class="text-sm text-gray-800">Job postings</span>
+      </label>
+      <label class="flex items-center gap-2 px-4 py-3 border-2 rounded-md cursor-pointer hover:border-gray-600 transition-colors has-[:checked]:border-black has-[:checked]:bg-gray-50 col-span-2">
+        <input type="checkbox" name="data_type" value="other" class="accent-black" />
+        <span class="text-sm text-gray-800">Other</span>
+      </label>
+    </div>
+    <div class="empty-feedback invalid-feedback text-red-400 text-sm mb-3 hidden" id="data-type-error">
+      Please select at least one data type.
+    </div>
+
+    <label class="block text-sm font-medium text-gray-700 mb-2">How often do you need this data?</label>
+    <div class="mb-5 grid grid-cols-2 gap-2">
+      <label class="flex items-center gap-2 px-4 py-3 border-2 rounded-md cursor-pointer hover:border-gray-600 transition-colors has-[:checked]:border-black has-[:checked]:bg-gray-50">
+        <input type="radio" name="frequency" value="one-time" class="accent-black" />
+        <span class="text-sm text-gray-800">One-time pull</span>
+      </label>
+      <label class="flex items-center gap-2 px-4 py-3 border-2 rounded-md cursor-pointer hover:border-gray-600 transition-colors has-[:checked]:border-black has-[:checked]:bg-gray-50">
+        <input type="radio" name="frequency" value="daily" class="accent-black" />
+        <span class="text-sm text-gray-800">Daily</span>
+      </label>
+      <label class="flex items-center gap-2 px-4 py-3 border-2 rounded-md cursor-pointer hover:border-gray-600 transition-colors has-[:checked]:border-black has-[:checked]:bg-gray-50">
+        <input type="radio" name="frequency" value="weekly" class="accent-black" />
+        <span class="text-sm text-gray-800">Weekly</span>
+      </label>
+      <label class="flex items-center gap-2 px-4 py-3 border-2 rounded-md cursor-pointer hover:border-gray-600 transition-colors has-[:checked]:border-black has-[:checked]:bg-gray-50">
+        <input type="radio" name="frequency" value="monthly" class="accent-black" />
+        <span class="text-sm text-gray-800">Monthly</span>
+      </label>
+    </div>
+    <div class="empty-feedback invalid-feedback text-red-400 text-sm mb-3 hidden" id="frequency-error">
+      Please select a frequency.
+    </div>
+
+    <div class="flex gap-3">
+      <button type="button" class="step-back px-6 py-3 border-2 border-black rounded text-black hover:bg-black hover:text-white transition w-full" data-back="1">Back</button>
+      <Button type="button" size="lg" block class="step-next" data-next="3">Next</Button>
     </div>
   </div>
-  <div class="mb-5">
-    <label for="email_address" class="sr-only">Email Address</label><input
-      id="email_address"
-      type="email"
-      placeholder="Email Address"
-      name="email"
-      required
-      class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
-    />
-    <div class="empty-feedback text-red-400 text-sm mt-1">
-      Please provide your email address.
+
+  <!-- Step 3: Contact info -->
+  <div id="step-3" class="form-step hidden">
+    <label class="block text-sm font-medium text-gray-700 mb-2">Where should we send your free sample?</label>
+    <div class="mb-5">
+      <input
+        type="email"
+        placeholder="Email address"
+        name="email"
+        required
+        id="email-input"
+        class="w-full px-4 py-3 border-2 placeholder:text-gray-400 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
+      />
+      <div class="empty-feedback text-red-400 text-sm mt-1">
+        Please provide your email address.
+      </div>
+      <div class="invalid-feedback text-red-400 text-sm mt-1">
+        Please provide a valid email address.
+      </div>
     </div>
-    <div class="invalid-feedback text-red-400 text-sm mt-1">
-      Please provide a valid email address.
+    <div class="mb-5">
+      <input
+        type="text"
+        placeholder="Your name"
+        name="name"
+        required
+        id="name-input"
+        class="w-full px-4 py-3 border-2 placeholder:text-gray-400 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
+      />
+      <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
+        Please provide your name.
+      </div>
     </div>
-  </div>
-  <div class="mb-5">
-    <input
-      type="tel"
-      placeholder="Phone Number (optional)"
-      class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
-      name="phone"
-    />
-  </div>
-  <div class="mb-5">
-    <input
-      type="text"
-      placeholder="Company Name (optional)"
-      class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
-      name="company"
-    />
-  </div>
-  <div class="mb-5">
-    <select
-      name="service"
-      required
-      class="w-full px-4 py-3 border-2 text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100">
-      <option value="" disabled selected>What do you need?</option>
-      <option value="web-scraping">Web Scraping</option>
-      <option value="data-extraction">Data Extraction</option>
-      <option value="recurring-data">Recurring Data Delivery</option>
-      <option value="automation">Automation</option>
-      <option value="data-pipeline">Data Pipeline</option>
-      <option value="custom-solution">Custom Solution</option>
-      <option value="other">Other</option>
-    </select>
-    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
-      Please select a service.
+    <div class="flex gap-3">
+      <button type="button" class="step-back px-6 py-3 border-2 border-black rounded text-black hover:bg-black hover:text-white transition w-full" data-back="2">Back</button>
+      <Button type="submit" size="lg" block>Get My Free Sample</Button>
     </div>
+    <p class="text-xs text-slate-400 mt-3 text-center">We'll send your sample within 24 hours.</p>
   </div>
-  <div class="mb-5">
-    <select
-      name="referral"
-      class="w-full px-4 py-3 border-2 text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100">
-      <option value="" disabled selected>How did you find us? (optional)</option>
-      <option value="google">Google</option>
-      <option value="bing">Bing</option>
-      <option value="linkedin">LinkedIn</option>
-      <option value="referral">Referral</option>
-      <option value="other">Other</option>
-    </select>
-  </div>
-  <div class="mb-3">
-    <textarea
-      name="message"
-      required
-      placeholder="Tell us about your project — what data sources, formats, and delivery schedule do you need?"
-      class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none h-36 focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
-    ></textarea>
-    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
-      Please describe your project requirements.
-    </div>
-  </div>
-  <Button type="submit" size="lg" block>Request a Free Quote</Button>
-  <p class="text-xs text-slate-400 mt-3 text-center">We typically respond within 24 hours.</p>
+
   <div id="result" class="mt-3 text-center"></div>
 </form>
 
@@ -126,6 +167,15 @@ import Button from "./ui/button.astro";
   .was-validated :invalid {
     border-color: #dc3545;
   }
+
+  .form-step {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
 </style>
 
 <script is:inline>
@@ -133,6 +183,83 @@ import Button from "./ui/button.astro";
   const submitBtn = form.querySelector('button[type="submit"]');
   const toast = document.getElementById("toast");
   const toastMessage = document.getElementById("toast-message");
+  const steps = form.querySelectorAll(".form-step");
+  const stepDots = form.querySelectorAll(".step-dot");
+  const stepLabel = document.getElementById("step-label");
+  let currentStep = 1;
+
+  function showStep(n) {
+    steps.forEach((s) => s.classList.add("hidden"));
+    document.getElementById("step-" + n).classList.remove("hidden");
+
+    stepDots.forEach((dot, i) => {
+      const stepNum = i + 1;
+      if (stepNum <= n) {
+        dot.classList.add("bg-black", "text-white");
+        dot.classList.remove("bg-gray-200", "text-gray-500");
+      } else {
+        dot.classList.remove("bg-black", "text-white");
+        dot.classList.add("bg-gray-200", "text-gray-500");
+      }
+    });
+
+    // Update progress bars
+    document.getElementById("bar-1").style.backgroundColor = n >= 2 ? "#000" : "";
+    document.getElementById("bar-2").style.backgroundColor = n >= 3 ? "#000" : "";
+
+    stepLabel.textContent = "Step " + n + " of 3";
+    currentStep = n;
+
+    // Remove validation state when navigating
+    form.classList.remove("was-validated");
+  }
+
+  function validateStep(n) {
+    if (n === 1) {
+      const source = document.getElementById("source-input");
+      if (!source.value.trim()) {
+        form.classList.add("was-validated");
+        source.focus();
+        return false;
+      }
+    }
+    if (n === 2) {
+      const checked = form.querySelectorAll('input[name="data_type"]:checked');
+      const freq = form.querySelector('input[name="frequency"]:checked');
+      const typeError = document.getElementById("data-type-error");
+      const freqError = document.getElementById("frequency-error");
+
+      typeError.classList.add("hidden");
+      freqError.classList.add("hidden");
+
+      if (checked.length === 0) {
+        typeError.classList.remove("hidden");
+        return false;
+      }
+      if (!freq) {
+        freqError.classList.remove("hidden");
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Next buttons
+  form.querySelectorAll(".step-next").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const next = parseInt(btn.dataset.next);
+      if (validateStep(currentStep)) {
+        showStep(next);
+      }
+    });
+  });
+
+  // Back buttons
+  form.querySelectorAll(".step-back").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      showStep(parseInt(btn.dataset.back));
+    });
+  });
 
   function showToast(message, type) {
     toastMessage.textContent = message;
@@ -154,12 +281,23 @@ import Button from "./ui/button.astro";
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     form.classList.add("was-validated");
-    if (!form.checkValidity()) {
-      form.querySelectorAll(":invalid")[0].focus();
+
+    // Validate step 3 fields
+    const email = document.getElementById("email-input");
+    const name = document.getElementById("name-input");
+    if (!email.value.trim() || !email.checkValidity() || !name.value.trim()) {
+      const firstInvalid = form.querySelector("#step-3 :invalid");
+      if (firstInvalid) firstInvalid.focus();
       return;
     }
 
     const formData = new FormData(form);
+
+    // Combine checkbox values into readable string
+    const dataTypes = Array.from(form.querySelectorAll('input[name="data_type"]:checked'))
+      .map((cb) => cb.value)
+      .join(", ");
+    formData.set("data_type", dataTypes);
 
     const originalText = submitBtn.textContent;
     submitBtn.textContent = "Sending...";
@@ -174,9 +312,10 @@ import Button from "./ui/button.astro";
       const data = await response.json();
 
       if (response.ok) {
-        showToast("Success! Your message has been sent.", "success");
+        showToast("Success! We'll send your sample within 24 hours.", "success");
         form.reset();
         form.classList.remove("was-validated");
+        showStep(1);
       } else {
         showToast("Error: " + data.message, "error");
       }

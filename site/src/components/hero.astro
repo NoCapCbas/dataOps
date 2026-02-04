@@ -1,21 +1,35 @@
 ---
-import { Picture } from "astro:assets";
-import heroImage from "assets/hero.png";
 import Link from "@components/ui/link.astro";
 import { Icon } from "astro-icon/components";
 ---
 
 <main
   class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
-  <div class="py-6 md:order-1 hidden md:block">
-    <Picture
-      src={heroImage}
-      alt="Data extraction illustration"
-      widths={[200, 400, 600]}
-      sizes="(max-width: 800px) 100vw, 620px"
-      loading="eager"
-      format="avif"
-    />
+  <div class="py-6 md:order-1 hidden md:block w-full max-w-xl">
+    <!-- Terminal-style data carousel -->
+    <div class="rounded-xl overflow-hidden shadow-2xl bg-gray-900 border border-gray-700">
+      <!-- Title bar -->
+      <div class="flex items-center gap-2 px-4 py-3 bg-gray-800 border-b border-gray-700">
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-full bg-red-500"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500"></div>
+        </div>
+        <span class="text-gray-400 text-xs font-mono ml-2" id="carousel-filename">leads.csv</span>
+      </div>
+      <!-- Code body -->
+      <div class="p-5 h-64 overflow-hidden relative">
+        <pre class="font-mono text-sm leading-relaxed transition-all duration-500" id="carousel-code"></pre>
+      </div>
+      <!-- Format tabs -->
+      <div class="flex gap-1 px-4 py-2.5 bg-gray-800 border-t border-gray-700">
+        <button class="carousel-tab px-2.5 py-1 rounded text-xs font-mono transition-colors" data-index="0">CSV</button>
+        <button class="carousel-tab px-2.5 py-1 rounded text-xs font-mono transition-colors" data-index="1">JSON</button>
+        <button class="carousel-tab px-2.5 py-1 rounded text-xs font-mono transition-colors" data-index="2">XML</button>
+        <button class="carousel-tab px-2.5 py-1 rounded text-xs font-mono transition-colors" data-index="3">SQL</button>
+        <button class="carousel-tab px-2.5 py-1 rounded text-xs font-mono transition-colors" data-index="4">Excel</button>
+      </div>
+    </div>
   </div>
   <div>
     <h1
@@ -29,17 +43,164 @@ import { Icon } from "astro-icon/components";
       <Link
         href="/contact"
         class="flex gap-1 items-center justify-center">
-        <Icon class="text-white w-5 h-5" name="bx:bxs-envelope" />
-         Get My Free Quote
-      </Link>
-      <Link
-        size="lg"
-        style="outline"
-        href="#features"
-        class="flex gap-1 items-center justify-center">
-        <Icon class="text-black w-5 h-5" name="bx:bx-info-square" />
-         See How It Works
+        <Icon class="text-white w-5 h-5" name="bx:bxs-data" />
+         Get a Free Data Sample
       </Link>
     </div>
   </div>
 </main>
+
+<style>
+  .carousel-tab {
+    color: #9ca3af;
+    background: transparent;
+  }
+  .carousel-tab:hover {
+    color: #d1d5db;
+    background: rgba(255,255,255,0.05);
+  }
+  .carousel-tab.active {
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+  }
+  #carousel-code {
+    opacity: 1;
+  }
+  #carousel-code.fade-out {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  #carousel-code.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Syntax colors */
+  .syn-key { color: #7dd3fc; }
+  .syn-str { color: #86efac; }
+  .syn-num { color: #fcd34d; }
+  .syn-punc { color: #6b7280; }
+  .syn-tag { color: #c084fc; }
+  .syn-attr { color: #7dd3fc; }
+  .syn-kw { color: #f472b6; }
+  .syn-comment { color: #6b7280; font-style: italic; }
+  .syn-col { color: #94a3b8; }
+  .syn-hdr { color: #cbd5e1; font-weight: 600; }
+  .syn-border { color: #475569; }
+</style>
+
+<script is:inline>
+  const slides = [
+    {
+      filename: "leads.csv",
+      content:
+        '<span class="syn-hdr">name,email,company,title</span>\n' +
+        '<span class="syn-str">Sarah Chen</span><span class="syn-punc">,</span><span class="syn-str">s.chen@acme.io</span><span class="syn-punc">,</span><span class="syn-str">Acme Corp</span><span class="syn-punc">,</span><span class="syn-str">VP of Sales</span>\n' +
+        '<span class="syn-str">James Miller</span><span class="syn-punc">,</span><span class="syn-str">jm@globex.com</span><span class="syn-punc">,</span><span class="syn-str">Globex Inc</span><span class="syn-punc">,</span><span class="syn-str">CTO</span>\n' +
+        '<span class="syn-str">Priya Patel</span><span class="syn-punc">,</span><span class="syn-str">priya@initech.co</span><span class="syn-punc">,</span><span class="syn-str">Initech</span><span class="syn-punc">,</span><span class="syn-str">Head of Growth</span>\n' +
+        '<span class="syn-str">Alex Rivera</span><span class="syn-punc">,</span><span class="syn-str">alex@stark.dev</span><span class="syn-punc">,</span><span class="syn-str">Stark Labs</span><span class="syn-punc">,</span><span class="syn-str">Data Lead</span>\n' +
+        '<span class="syn-str">Mei Wong</span><span class="syn-punc">,</span><span class="syn-str">mei@wayne.co</span><span class="syn-punc">,</span><span class="syn-str">Wayne Ent</span><span class="syn-punc">,</span><span class="syn-str">Product Mgr</span>\n' +
+        '<span class="syn-comment">... 12,847 more rows</span>'
+    },
+    {
+      filename: "products.json",
+      content:
+        '<span class="syn-punc">[</span>\n' +
+        '  <span class="syn-punc">{</span>\n' +
+        '    <span class="syn-key">"name"</span><span class="syn-punc">:</span> <span class="syn-str">"Wireless Pro Headphones"</span><span class="syn-punc">,</span>\n' +
+        '    <span class="syn-key">"price"</span><span class="syn-punc">:</span> <span class="syn-num">149.99</span><span class="syn-punc">,</span>\n' +
+        '    <span class="syn-key">"rating"</span><span class="syn-punc">:</span> <span class="syn-num">4.7</span><span class="syn-punc">,</span>\n' +
+        '    <span class="syn-key">"reviews"</span><span class="syn-punc">:</span> <span class="syn-num">2841</span><span class="syn-punc">,</span>\n' +
+        '    <span class="syn-key">"in_stock"</span><span class="syn-punc">:</span> <span class="syn-num">true</span>\n' +
+        '  <span class="syn-punc">},</span>\n' +
+        '  <span class="syn-comment">// ... 3,291 products</span>\n' +
+        '<span class="syn-punc">]</span>'
+    },
+    {
+      filename: "reviews.xml",
+      content:
+        '<span class="syn-tag">&lt;reviews</span> <span class="syn-attr">source</span>=<span class="syn-str">"trustpilot"</span><span class="syn-tag">&gt;</span>\n' +
+        '  <span class="syn-tag">&lt;review</span> <span class="syn-attr">id</span>=<span class="syn-str">"4810"</span><span class="syn-tag">&gt;</span>\n' +
+        '    <span class="syn-tag">&lt;author&gt;</span><span class="syn-str">mkjohnson</span><span class="syn-tag">&lt;/author&gt;</span>\n' +
+        '    <span class="syn-tag">&lt;rating&gt;</span><span class="syn-num">5</span><span class="syn-tag">&lt;/rating&gt;</span>\n' +
+        '    <span class="syn-tag">&lt;date&gt;</span><span class="syn-str">2025-01-15</span><span class="syn-tag">&lt;/date&gt;</span>\n' +
+        '    <span class="syn-tag">&lt;text&gt;</span><span class="syn-str">Exceptional quality,</span>\n' +
+        '      <span class="syn-str">fast shipping...</span><span class="syn-tag">&lt;/text&gt;</span>\n' +
+        '  <span class="syn-tag">&lt;/review&gt;</span>\n' +
+        '  <span class="syn-comment">&lt;!-- 8,412 reviews --&gt;</span>\n' +
+        '<span class="syn-tag">&lt;/reviews&gt;</span>'
+    },
+    {
+      filename: "jobs.sql",
+      content:
+        '<span class="syn-kw">INSERT INTO</span> <span class="syn-str">job_postings</span>\n' +
+        '  <span class="syn-punc">(</span><span class="syn-col">title</span><span class="syn-punc">,</span> <span class="syn-col">company</span><span class="syn-punc">,</span> <span class="syn-col">location</span><span class="syn-punc">,</span> <span class="syn-col">salary</span><span class="syn-punc">)</span>\n' +
+        '<span class="syn-kw">VALUES</span>\n' +
+        '  <span class="syn-punc">(</span><span class="syn-str">\'Sr. Data Engineer\'</span><span class="syn-punc">,</span> <span class="syn-str">\'Stripe\'</span><span class="syn-punc">,</span>\n' +
+        '   <span class="syn-str">\'Remote\'</span><span class="syn-punc">,</span> <span class="syn-num">185000</span><span class="syn-punc">),</span>\n' +
+        '  <span class="syn-punc">(</span><span class="syn-str">\'ML Engineer\'</span><span class="syn-punc">,</span> <span class="syn-str">\'OpenAI\'</span><span class="syn-punc">,</span>\n' +
+        '   <span class="syn-str">\'San Francisco\'</span><span class="syn-punc">,</span> <span class="syn-num">210000</span><span class="syn-punc">),</span>\n' +
+        '  <span class="syn-punc">(</span><span class="syn-str">\'Backend Dev\'</span><span class="syn-punc">,</span> <span class="syn-str">\'Shopify\'</span><span class="syn-punc">,</span>\n' +
+        '   <span class="syn-str">\'Toronto\'</span><span class="syn-punc">,</span> <span class="syn-num">155000</span><span class="syn-punc">);</span>\n' +
+        '<span class="syn-comment">-- 6,203 rows inserted</span>'
+    },
+    {
+      filename: "pricing.xlsx",
+      content:
+        '<span class="syn-border">┌────┬──────────────────┬────────┬───────┐</span>\n' +
+        '<span class="syn-border">│</span> <span class="syn-hdr">  # </span><span class="syn-border">│</span> <span class="syn-hdr">Product          </span><span class="syn-border">│</span> <span class="syn-hdr">Price  </span><span class="syn-border">│</span> <span class="syn-hdr">Stock </span><span class="syn-border">│</span>\n' +
+        '<span class="syn-border">├────┼──────────────────┼────────┼───────┤</span>\n' +
+        '<span class="syn-border">│</span> <span class="syn-num"> 1 </span><span class="syn-border">│</span> <span class="syn-str">Nike Air Max 90  </span><span class="syn-border">│</span> <span class="syn-num">$129  </span><span class="syn-border">│</span> <span class="syn-num"> 342 </span><span class="syn-border">│</span>\n' +
+        '<span class="syn-border">│</span> <span class="syn-num"> 2 </span><span class="syn-border">│</span> <span class="syn-str">Adidas Ultra 22  </span><span class="syn-border">│</span> <span class="syn-num">$179  </span><span class="syn-border">│</span> <span class="syn-num"> 187 </span><span class="syn-border">│</span>\n' +
+        '<span class="syn-border">│</span> <span class="syn-num"> 3 </span><span class="syn-border">│</span> <span class="syn-str">NB 990v6        </span><span class="syn-border">│</span> <span class="syn-num">$199  </span><span class="syn-border">│</span> <span class="syn-num">  93 </span><span class="syn-border">│</span>\n' +
+        '<span class="syn-border">│</span> <span class="syn-num"> 4 </span><span class="syn-border">│</span> <span class="syn-str">Asics Gel-Kayano </span><span class="syn-border">│</span> <span class="syn-num">$159  </span><span class="syn-border">│</span> <span class="syn-num"> 421 </span><span class="syn-border">│</span>\n' +
+        '<span class="syn-border">└────┴──────────────────┴────────┴───────┘</span>\n' +
+        '<span class="syn-comment">  4 of 2,150 rows shown</span>'
+    }
+  ];
+
+  let current = 0;
+  const codeEl = document.getElementById("carousel-code");
+  const filenameEl = document.getElementById("carousel-filename");
+  const tabs = document.querySelectorAll(".carousel-tab");
+
+  function showSlide(index) {
+    // Fade out
+    codeEl.style.opacity = "0";
+    codeEl.style.transform = "translateY(6px)";
+
+    setTimeout(() => {
+      codeEl.innerHTML = slides[index].content;
+      filenameEl.textContent = slides[index].filename;
+
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle("active", i === index);
+      });
+
+      // Fade in
+      codeEl.style.opacity = "1";
+      codeEl.style.transform = "translateY(0)";
+    }, 300);
+  }
+
+  // Tab clicks
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const index = parseInt(tab.dataset.index);
+      if (index !== current) {
+        current = index;
+        showSlide(current);
+        clearInterval(autoplay);
+        autoplay = setInterval(nextSlide, 3500);
+      }
+    });
+  });
+
+  function nextSlide() {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  }
+
+  // Init
+  showSlide(0);
+  let autoplay = setInterval(nextSlide, 3500);
+</script>
