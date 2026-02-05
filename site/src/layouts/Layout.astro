@@ -53,6 +53,9 @@ const makeTitle = title
         },
       }}
     />
+
+    <!-- Swetrix Analytics -->
+    <script src="https://swetrix.org/swetrix.js" defer></script>
   </head>
   <body>
     <Navbar />
@@ -65,5 +68,22 @@ const makeTitle = title
         content-visibility: auto;
       }
     </style>
+
+    <!-- Swetrix Analytics Init -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        swetrix.init('2ZfytOBblmxN', {
+          apiURL: 'https://swetrix-api.damondiaz.xyz/log',
+        })
+        swetrix.trackViews()
+      })
+    </script>
+    <noscript>
+      <img
+        src="https://swetrix-api.damondiaz.xyz/log/noscript?pid=2ZfytOBblmxN"
+        alt=""
+        referrerpolicy="no-referrer-when-downgrade"
+      />
+    </noscript>
   </body>
 </html>
